@@ -51,6 +51,13 @@
             transition: background 0.5s ease, color 0.5s ease;
         }
 
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Merriweather', serif;
+        }
+
         /* ==================== TOP NAVIGATION BAR ==================== */
         .navbar {
             position: fixed;
@@ -170,7 +177,7 @@
         }
 
         .board-image {
-            height: 85px;
+            height: 90px;
             width: auto;
             transition: var(--transition-smooth);
         }
@@ -305,10 +312,33 @@
         }
 
         .vcard-desc {
-            margin: 0;
             font-size: 14px;
             color: var(--text-secondary, #666);
             line-height: 1.6;
+            margin-bottom: 8px;
+            display: -webkit-box;
+            display: box;
+            /* legacy fallback */
+            -webkit-box-orient: vertical;
+            box-orient: vertical;
+
+            /* ✅ modern + legacy support */
+            line-clamp: 2;
+            /* standard property */
+            -webkit-line-clamp: 2;
+            /* vendor-prefixed fallback */
+
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: max-height 0.3s ease;
+            max-height: 3.2em;
+            /* about 2 lines × 1.6 line-height */
+        }
+
+        .vcard-desc.expanded {
+            line-clamp: unset;
+            -webkit-line-clamp: unset;
+            max-height: none;
         }
 
         .expand-btn {
@@ -393,11 +423,11 @@
             <li class="nav-item"><a href="#" class="nav-link">To do</a></li>
             <li class="nav-item"><a href="#" class="nav-link">Help</a></li>
         </ul>
-        <a href="#" class="board-container">
+        <a href="Billboard.html" class="board-container">
             <img src="Assets\billboard.png" alt="Billboard" class="board-image">
         </a>
-        <a href="Avatar1.html" class="avatar-container" style="--avatar-bg: #F8F8F8;">
-            <img src="#" alt="User Avatar" class="avatar-img">
+        <a href="Avatar1.html" class="avatar-container" style="--avatar-bg: #b8d8ff;">
+            <img src="#" alt=" " class="avatar-img">
         </a>
     </nav>
     <!-- Main Content -->
@@ -407,15 +437,28 @@
                 <!-- 卡片 1 -->
                 <article class="vcard">
                     <div class="vcard-img">
-                        <img src="https://picsum.photos/600/800?1" alt="示例图片1">
+                        <img src="Assets\9105.png" alt="9105">
                     </div>
 
                     <div class="vcard-body">
-                        <h3 class="vcard-title">蓝花楹的季节</h3>
+                        <h3 class="vcard-title">IDEA9105 Interface Design</h3>
 
                         <p class="vcard-desc">
-                            每年十月到十一月，悉尼街道被梦幻的紫色笼罩。蓝花楹象征着短暂的美好与告别，
-                            也代表新的开始与希望。
+                            This unit of study provides an overview of a human-centred approach to the design of
+                            products and systems. It introduces
+                            students to design thinking and how it can be productively applied to different design
+                            situations. The theoretical
+                            concepts, methods and tools for the key stages of interaction design are covered including
+                            user research, ideation,
+                            prototyping and user evaluation. It provides students with the principles, processes and
+                            tools for working
+                            collaboratively on design projects in studio. Students learn to build empathy with users,
+                            identify and reframe the
+                            problem space, develop value-driven design concepts and persuasively communicate design
+                            proposals with an emphasis on
+                            the user experience through visual storytelling. This unit is a foundational core unit in
+                            the Master of Interaction
+                            Design and Electronic Arts program.
                         </p>
 
                         <!-- 展开更多按钮 -->
@@ -433,15 +476,28 @@
                 <!-- 卡片 2 -->
                 <article class="vcard">
                     <div class="vcard-img">
-                        <img src="https://picsum.photos/600/800?1" alt="示例图片1">
+                        <img src="Assets\9106.png" alt="9106">
                     </div>
 
                     <div class="vcard-body">
-                        <h3 class="vcard-title">蓝花楹的季节</h3>
+                        <h3 class="vcard-title">IDEA9106 Design Thinking</h3>
 
                         <p class="vcard-desc">
-                            每年十月到十一月，悉尼街道被梦幻的紫色笼罩。蓝花楹象征着短暂的美好与告别，
-                            也代表新的开始与希望。
+                            This unit of study provides an overview of a human-centred approach to the design of
+                            products and systems. It introduces
+                            students to design thinking and how it can be productively applied to different design
+                            situations. The theoretical
+                            concepts, methods and tools for the key stages of interaction design are covered including
+                            user research, ideation,
+                            prototyping and user evaluation. It provides students with the principles, processes and
+                            tools for working
+                            collaboratively on design projects in studio. Students learn to build empathy with users,
+                            identify and reframe the
+                            problem space, develop value-driven design concepts and persuasively communicate design
+                            proposals with an emphasis on
+                            the user experience through visual storytelling. This unit is a foundational core unit in
+                            the Master of Interaction
+                            Design and Electronic Arts program.
                         </p>
 
                         <!-- 展开更多按钮 -->
@@ -458,15 +514,30 @@
                 <!-- 卡片 3 -->
                 <article class="vcard">
                     <div class="vcard-img">
-                        <img src="https://picsum.photos/600/800?1" alt="示例图片1">
+                        <img src="Assets\9103.png" alt="9103">
                     </div>
 
                     <div class="vcard-body">
-                        <h3 class="vcard-title">蓝花楹的季节</h3>
+                        <h3 class="vcard-title">IDEA9103 Creative Coding</h3>
 
                         <p class="vcard-desc">
-                            每年十月到十一月，悉尼街道被梦幻的紫色笼罩。蓝花楹象征着短暂的美好与告别，
-                            也代表新的开始与希望。
+                            This unit provides an introduction to the development of software in design and the creative
+                            industries. It teaches an
+                            understanding of the fundamentals of computational thinking, as well as skills in the design
+                            and implementation of
+                            software for creative expression. It introduces students to tools for building interactive
+                            design prototypes that
+                            express their interaction design skills through programming. It covers knowledge of
+                            programming concepts, creative
+                            coding practices, and their practical implementation through Javascript, HTML, and CSS. Key
+                            concepts covered in this
+                            unit include: variables, functions, control flows, and algorithmic thinking. Students learn
+                            how to approach creative
+                            expression through the medium of code, which will allow them to incorporate programming into
+                            their own design practice
+                            as well as to collaborate effectively with software developers. This unit is a foundational
+                            core unit in the Master of
+                            Interaction Design and Electronic Arts program.
                         </p>
 
                         <!-- 展开更多按钮 -->
@@ -484,15 +555,28 @@
                 <!-- 卡片 4 -->
                 <article class="vcard">
                     <div class="vcard-img">
-                        <img src="https://picsum.photos/600/800?1" alt="示例图片1">
+                        <img src="Assets\9004.png" alt="9004">
                     </div>
 
                     <div class="vcard-body">
-                        <h3 class="vcard-title">蓝花楹的季节</h3>
+                        <h3 class="vcard-title">DESN9004 Practices of Design Innovation</h3>
 
                         <p class="vcard-desc">
-                            每年十月到十一月，悉尼街道被梦幻的紫色笼罩。蓝花楹象征着短暂的美好与告别，
-                            也代表新的开始与希望。
+                            In this subject, you will gain an understanding of design-led innovation concepts, practices
+                            and approaches. You will
+                            explore design-based innovation issues and use critical thinking to explore various notions
+                            of design value. This
+                            subject explores different modes of inquiry and encourages students to develop a diverse
+                            range of research practices.
+                            Knowledge and understanding of design thinking gained from other units will be applied via
+                            critical thinking to
+                            practical design topics. Students learn how to engage with design innovation (or is that
+                            innovative design?) practices,
+                            as well as engaging with practical design and innovation challenges. Students will leave
+                            this course with a
+                            comprehensive understanding of design innovation principles, as well as practices drawing on
+                            critical design thinking
+                            and design methods and approaches.
                         </p>
 
                         <!-- 展开更多按钮 -->
@@ -517,13 +601,16 @@
 <script>
     document.querySelectorAll('.expand-btn').forEach(btn => {
         btn.addEventListener('click', () => {
-            const desc = btn.previousElementSibling;
-            desc.classList.toggle('expanded');
-            if (desc.classList.contains('expanded')) {
+            const desc = btn.previousElementSibling; // 找到文字描述段落
+            const isExpanded = desc.classList.toggle('expanded');
+
+            if (isExpanded) {
+                // 展开状态：显示全部内容
                 desc.style.webkitLineClamp = 'unset';
                 btn.textContent = 'Show less';
             } else {
-                desc.style.webkitLineClamp = '3';
+                // 收起状态：只显示两行
+                desc.style.webkitLineClamp = '2';
                 btn.textContent = '··· More';
             }
         });

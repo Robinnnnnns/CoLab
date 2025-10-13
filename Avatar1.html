@@ -88,6 +88,35 @@
             animation: fadeUp .7s ease .05s forwards;
         }
 
+        .bg-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--primary-orange);
+  font-size: 24px;
+  font-weight: 800;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: all .25s ease;
+  z-index: 10;
+  
+}
+
+.bg-arrow:hover {
+  background: var(--primary-orange);
+  color: white;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.bg-arrow.left { left: 12px; }
+.bg-arrow.right { right: 12px; }
+
         .avatar-preview:hover {
             transform: translateY(-4px);
             box-shadow: var(--shadow-md);
@@ -239,8 +268,13 @@
         <h1 class="avatar-title">Create your avatar :D</h1>
 
         <div class="avatar-preview" aria-label="Avatar preview area">
-          
+            <button class="bg-arrow left" aria-label="Previous background">‹</button>
+            <button class="bg-arrow left" aria-label="Previous background">‹</button>
+            
             <img id="avatarImg" src="Assets/Avatar8.png" alt="Avatar preview">
+            <button class="bg-arrow right" aria-label="Next background">›</button>
+            <button class="bg-arrow right" aria-label="Next background">›</button>
+           
         </div>
 
         <a  href="Avatar2.html" class="save-box" id="saveBtn" aria-label="Save avatar">
@@ -276,6 +310,30 @@
             avatarImg.src = cell.dataset.src;
         });
     });
+
+
+     const preview = document.querySelector('.avatar-preview');
+
+        // 🎨 预设几种背景颜色（可自行扩展）
+        const bgColors = [
+            '#b8d8ff',  // 蓝
+            '#ffe3b8',  // 浅橙
+            '#d6f5d6',  // 淡绿
+            '#f5d6f0',  // 粉紫
+            '#f0f0f0'   // 灰白
+        ];
+        let currentIndex = 0;
+
+        // 左右按钮
+        document.querySelector('.bg-arrow.left').addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + bgColors.length) % bgColors.length;
+            preview.style.background = bgColors[currentIndex];
+        });
+
+        document.querySelector('.bg-arrow.right').addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % bgColors.length;
+            preview.style.background = bgColors[currentIndex];
+        });
 </script>
 
 
