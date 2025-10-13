@@ -184,6 +184,162 @@
             /* 播放动画 */
 
         }
+
+        /* 🌟 自我介绍外层容器 */
+        .avatar-bio-box {
+         display: flex;
+         flex-direction: column;
+         gap: 10px;
+         margin-top: 12px;
+         max-width: 800px;      /* ✅ 从 480px → 640px，右侧更宽 */
+         width: 100%;      /* 控制宽度，可根据右侧布局调整 */
+}
+
+
+
+/* 🌟 文本框主体 */
+        .avatar-bio-box textarea {
+         resize: none;
+         width: 100%;           /* ✅ 确保跟随容器宽度伸展 */
+         height: 180px;                   
+         padding: 12px 16px;
+         margin-top: 8px;
+         font-size: 1rem;
+         font-family: 'Inter', sans-serif; /* 与整体一致 */
+         line-height: 1.5;
+         color: var(--text-primary);
+         background: var(--ultra-light);
+         border: 2px solid var(--border-color);
+         border-radius: 16px;
+         box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.05);
+         transition: all 0.3s ease;
+       }
+
+/* 🌟 鼠标悬浮或聚焦时高亮（与 Save 按钮风格呼应） */
+.avatar-bio-box textarea:hover,
+.avatar-bio-box textarea:focus {
+  background: var(--bg-main);
+  border-color: var(--primary-orange);
+  box-shadow: 0 0 10px var(--orange-glow);
+  outline: none;
+}
+
+/* 🌟 placeholder 文字颜色淡化 */
+.avatar-bio-box textarea::placeholder {
+  color: var(--mid-grey);
+  opacity: 0.7;
+}
+.portfolio-section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 800px;
+  width: 100%;
+}
+
+
+/* 上部：两张纵向图 + 大上传ICON */
+.portfolio-box{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.1fr;   /* 两张竖图 + 右侧更宽的上传格 */
+  gap: 12px;
+  padding: 14px;
+  border: 2px solid var(--border-color);
+  border-radius: 16px;
+  background: var(--card-bg, #fff);
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(0,0,0,.06));
+}
+
+/* 纵向缩略图位 */
+.thumb-vert{
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;                   /* 竖向比例 */
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--ultra-light);
+  border: 1px dashed var(--border-color);
+}
+.thumb-vert img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* 右侧上传位 */
+.upload-spot{
+  display: grid;
+  place-items: center;
+  gap: 6px;
+  border: 2px dashed var(--border-color);
+  border-radius: 12px;
+  background: var(--ultra-light);
+  cursor: pointer;
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease;
+  padding: 10px;
+}
+.upload-spot:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0,0,0,.08);
+  border-color: var(--primary-orange);
+  background: #fff;
+}
+.upload-icon{
+  font-size: 42px;
+  line-height: 1;
+  color: var(--primary-orange);
+  font-weight: 900;
+}
+.upload-text{
+  text-align: center;
+  font-size: .9rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* 下部：路径 + 按钮 */
+.portfolio-controls{
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: center;
+}
+
+.file-path{
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  background: var(--ultra-light);
+  color: var(--text-primary);
+  font-size: .95rem;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,.04);
+}
+
+.file-path:hover,
+.file-path:focus {
+  outline: none;                           /* 去掉默认蓝边 */
+  border-color: var(--primary-orange);     /* ✅ 选中时边框变橙色 */
+  background: var(--bg-main);                        /* ✅ 背景从浅灰变白 */
+  box-shadow: 0 0 8px var(--orange-glow);  /* ✅ 柔光高亮效果 */
+}
+.upload-btn{
+  padding: 10px 18px;
+  border-radius: 12px;
+  border: none;
+  color: #fff;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--primary-orange), var(--primary-orange-dark, #D35426));
+  box-shadow: 0 4px 15px rgba(242,107,56,.28);
+  cursor: pointer;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.upload-btn:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(242,107,56,.4);
+}
+
           a {
             text-decoration: none;
             /* ✅ 去掉下划线 */
@@ -191,7 +347,7 @@
             /* ✅ 继承父级颜色（不再是蓝色） */
         }
         h2 {
-             margin-top: 35px;   /* 上方间距 */
+             margin-top: 20px;   /* 上方间距 */
         }
 
 
@@ -232,11 +388,14 @@
     transform: translateX(0);
   }
 }
+@media (max-width: 780px){
+  .portfolio-box{ grid-template-columns: 1fr 1fr; }
+  .upload-spot{ grid-column: 1 / -1; aspect-ratio: 5 / 2; }
+}
     </style>
     <body>
         <section class="avatar-left">
-        <section class="avatar-left">
-            <h1 class="avatar-title">I'm a person that... </h1>
+            <h1 class="avatar-title">More about me... </h1>
         
             <div class="avatar-preview" aria-label="Avatar preview area">
         
@@ -248,6 +407,43 @@
                 <a href="Home_logged.html" class="save-box" id="saveBtn" aria-label="Save avatar">💾 Save</a>
             </div>
         </section>
-        </section>
+        <aside class="avatar-right">
+            
+            <div class="avatar-bio-box">
+                <h2>My introduction </h2>
+                <textarea type="text" id="MyIntro" placeholder="Write something about yourself..." ></textarea>
+            </div>
+            
+            <!-- Portfolio 上传区 -->
+            <section class="portfolio-section">
+                <h2>My Portfolio</h2>
+            
+                <!-- 预览+上传框 -->
+                <div class="portfolio-box" id="portfolioBox">
+                    <div class="thumb-vert">
+                        <img id="pfThumb1" src="Assets\port1.png" alt="Preview 1" />
+                    </div>
+                    <div class="thumb-vert">
+                        <img id="pfThumb2" src="Assets\port2.png" alt="Preview 2" />
+                    </div>
+                    <button class="upload-spot" id="chooseFilesBtn" aria-label="Choose files">
+                        <div class="upload-icon">⬆</div>
+                        <div class="upload-text">Select<br>images</div>
+                    </button>
+                    <!-- 隐藏的文件输入 -->
+                    <input type="file" id="pfInput" accept="image/*" multiple hidden>
+                </div>
+            
+                <!-- 路径与提交 -->
+                <div class="portfolio-controls">
+                    <input class="file-path" id="pfPath" type="text" placeholder="No files selected" readonly>
+                    <button class="upload-btn" id="uploadBtn">Upload</button>
+                </div>
+            </section>
+
+
+
+        </aside>
        
     </body>
+    
