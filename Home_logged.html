@@ -264,9 +264,9 @@
       -webkit-box-orient: vertical;
       overflow: hidden;
       text-overflow: ellipsis;
-      -webkit-line-clamp: 7;
-      line-clamp: 7;
-      max-height: 11.2em;
+      -webkit-line-clamp: 5;
+      line-clamp: 5;
+      max-height: 8em;
       text-align: left;
       transition: max-height .3s ease;
     }
@@ -534,7 +534,7 @@
         const desc = btn.previousElementSibling;
         const expanded = desc.classList.toggle('expanded');
         btn.textContent = expanded ? 'Show less' : '··· More';
-        desc.style.webkitLineClamp = expanded ? 'unset' : '7';
+        desc.style.webkitLineClamp = expanded ? 'unset' : '5';
       });
     });
 
