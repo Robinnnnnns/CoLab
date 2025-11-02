@@ -508,11 +508,25 @@
   </main>
 
   <script>
-    // --- 上传 + 替换 + 删除，纯前端，不保存 ---
-    let currentPortfolio = [];
-    const MAX_IMAGES = 6;
-    let replaceIndex = null;
+    // --- 保留头像（从上一页写入的 localStorage 读取） ---
+    // --- Restore avatar selection (from Avatar1) ---
+      (function restoreAvatar() {
+        const raw = localStorage.getItem('avatarSelection');
+        if (!raw) return;
+        try {
+          const { avatarSrc, bgColor, bgStyle } = JSON.parse(raw);
+          if (avatarSrc) document.getElementById('avatarImg').src = avatarSrc;
+          const bg = bgStyle || bgColor;
+          if (bg) document.getElementById('preview').style.background = bg;
+        } catch (e) { console.warn('Failed to parse avatarSelection', e); }
+      })();
 
+    // --- 仅上传/预览 + 替换 + 删除（不做持久化） ---
+    let currentPortfolio = [];            // 仅存放本页会话内的图片 DataURL
+    const MAX_IMAGES = 6;
+    let replaceIndex = null;              // null = 新增；数字 = 替换对应槽位
+
+    // DOM
     const pfInput = document.getElementById('pfInput');
     const chooseFilesBtn = document.getElementById('chooseFilesBtn');
     const pfPath = document.getElementById('pfPath');
@@ -520,9 +534,9 @@
     const pfThumb2 = document.getElementById('pfThumb2');
     const uploadBtn = document.getElementById('uploadBtn');
 
-    // 触发系统文件选择
+    // 触发系统文件选择（新增模式）
     chooseFilesBtn.addEventListener('click', () => {
-      replaceIndex = null; // 新增模式
+      replaceIndex = null;
       pfInput.click();
     });
 
@@ -533,23 +547,23 @@
 
       const toRead = (replaceIndex === null)
         ? files.slice(0, Math.max(0, MAX_IMAGES - currentPortfolio.length))
-        : files.slice(0, 1);
+        : files.slice(0, 1); // 替换只取1个
 
       readFilesAsDataURL(toRead).then(urls => {
         if (replaceIndex === null) {
-          currentPortfolio = currentPortfolio.concat(urls).slice(0, MAX_IMAGES);
+          currentPortfolio = currentPortfolio.concat(urls).slice(0, MAX_IMAGES); // 新增
         } else {
-          currentPortfolio[replaceIndex] = urls[0];
+          currentPortfolio[replaceIndex] = urls[0]; // 替换
           replaceIndex = null;
         }
         refreshThumbnails();
         refreshFilePath(files.map(f => f.name));
       });
 
-      pfInput.value = '';
+      pfInput.value = ''; // 允许选择同一文件重复触发
     });
 
-    // 拖拽上传
+    // 拖拽上传（新增模式）
     ['dragenter', 'dragover'].forEach(evt => {
       chooseFilesBtn.addEventListener(evt, e => {
         e.preventDefault(); e.stopPropagation();
@@ -562,40 +576,42 @@
         chooseFilesBtn.classList.remove('drag');
       });
     });
-    chooseFilesBtn.addEventListener('drop', (e) => {
+    chooseFilesBtn.addEventListener('drop', e => {
+      replaceIndex = null; // 新增
       const files = Array.from(e.dataTransfer.files || []).filter(f => f.type.startsWith('image/'));
       if (!files.length) return;
       const remain = Math.max(0, MAX_IMAGES - currentPortfolio.length);
       readFilesAsDataURL(files.slice(0, remain)).then(urls => {
         currentPortfolio = currentPortfolio.concat(urls).slice(0, MAX_IMAGES);
-        refreshThumbnails();
-        refreshFilePath(files.map(f => f.name));
+        refreshThumbnails(); refreshFilePath(files.map(f => f.name));
       });
     });
 
-    // “Upload” 按钮：当作再次选择
+    // “Upload” 按钮：当作再次选择（不发送服务器）
     uploadBtn.addEventListener('click', () => {
       replaceIndex = null;
       pfInput.click();
     });
 
-    // 点击缩略图：第一次点击替换，右键删除
+    // 点击缩略图 => 替换；右键 => 删除
     [pfThumb1, pfThumb2].forEach((thumb, idx) => {
+      if (!thumb) return;
+
+      // 替换该槽
       thumb.addEventListener('click', () => {
-        if (!currentPortfolio[idx]) return; // 没图片就跳过
+        if (!currentPortfolio[idx]) return; // 没有已选内容时，点击无动作
         replaceIndex = idx;
         pfInput.click();
       });
 
+      // 删除该槽
       thumb.addEventListener('contextmenu', (e) => {
         e.preventDefault();
-        if (currentPortfolio[idx]) {
-          const confirmDelete = confirm('Remove this image?');
-          if (confirmDelete) {
-            currentPortfolio.splice(idx, 1);
-            refreshThumbnails();
-            refreshFilePath();
-          }
+        if (!currentPortfolio[idx]) return;
+        if (confirm('Remove this image?')) {
+          currentPortfolio.splice(idx, 1);  // 删除并前移
+          refreshThumbnails();
+          refreshFilePath();
         }
       });
     });
@@ -613,8 +629,8 @@
       setThumb(pfThumb1, 0, 'Assets/port1.png');
       setThumb(pfThumb2, 1, 'Assets/port2.png');
     }
-
     function setThumb(imgEl, idx, placeholder) {
+      if (!imgEl) return;
       const url = currentPortfolio[idx];
       imgEl.src = url || placeholder;
     }
@@ -629,6 +645,7 @@
       }
     }
   </script>
+
 
 
 </body>
