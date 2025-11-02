@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <title>Avatar</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+    <title>Avatar2</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -13,223 +13,298 @@
         rel="stylesheet" />
 
     <style>
-        * {
+        /* RESET */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
             margin: 0;
-            padding: 0;
-            box-sizing: border-box
+            background: #FAFAFA;
+            color: #1A1A1A;
+            font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, "Noto Sans";
         }
 
         :root {
             --primary-orange: #F26B38;
             --primary-orange-dark: #D95A2A;
-            --primary-orange-light: #FF8A5B;
-            --orange-glow: rgba(242, 107, 56, 0.25);
-            --bg-main: #FAFAFA;
-            --bg-secondary: #FFFFFF;
-            --bg-card: #FFFFFF;
+            --ultra-light: #F2F2F2;
             --text-primary: #1A1A1A;
             --text-secondary: #4A4A4A;
-            --text-muted: #8A8A8A;
-            --ultra-light: #F2F2F2;
             --border-color: #E8E8E8;
-            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
-            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08);
-            --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.12);
-            --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.15);
-            --transition-smooth: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-            --transition-bounce: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            --ease: cubic-bezier(.4,0,.2,1);
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, .06);
+            --shadow-md: 0 6px 24px rgba(0, 0, 0, .10);
+            --ease: cubic-bezier(.4, 0, .2, 1);
+
+            --page-gap: clamp(16px, 2vw, 32px);
+            --col-max: clamp(560px, 48vw, 680px);
+            --radius-lg: clamp(20px, 3vw, 36px);
+            --radius-md: clamp(12px, 1.6vw, 16px);
+            --fs-h1: clamp(22px, 2.2vw, 32px);
+            --fs-h2: clamp(16px, 1.6vw, 20px);
+            --fs-btn: clamp(14px, 1.2vw, 16px);
+            --chip-pad-y: clamp(8px, 1vw, 10px);
+            --chip-pad-x: clamp(16px, 2vw, 24px);
         }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-main);
-            color: var(--text-primary);
+        /* layout */
+        .page {
+            min-height: 100%;
             display: grid;
-            grid-template-columns: 640px 1fr;
-            /* 左侧固定宽度，右侧自适应 */
+            grid-template-columns: minmax(0, var(--col-max)) 1fr;
+            gap: var(--page-gap);
             align-items: center;
-            /* ✅ 垂直居中 */
-            min-height: 100vh;
-            overflow-x: hidden;
-            transition: background-color .4s var(--ease);
-            font-family: 'Merriweather', serif;
-
+            padding: env(safe-area-inset-top) clamp(12px, 4vw, 40px) env(safe-area-inset-bottom) clamp(12px, 4vw, 40px);
         }
 
+        @media (max-width:960px) {
+            .page {
+                grid-template-columns: 1fr;
+                align-items: start;
+            }
+        }
+
+        /* left */
         .avatar-left {
             display: grid;
             grid-template-rows: auto 1fr auto;
-            align-items: center;
-            gap: 16px;
-            width: 40vw; 
-            max-width: 600px;
-            min-height: 70vh;
-            padding: 12px;
-            position: relative;
-            margin: 0 auto;
+            gap: clamp(12px, 1.8vw, 20px);
+            margin-inline: auto;
+            width: 100%;
+            max-width: var(--col-max);
         }
 
         .avatar-title {
-            font-size: 2rem;
+            font-family: "Merriweather", serif;
+            font-size: var(--fs-h1);
             font-weight: 900;
-            color: var(--text-primary);
-            margin-bottom: 0.5rem;
             line-height: 1.2;
-            animation: slideInDown 1s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .avatar-preview {
             width: 100%;
             aspect-ratio: 1/1;
             background: #b8d8ff;
-            border-radius: 36px;
+            border-radius: var(--radius-lg);
             box-shadow: var(--shadow-sm);
+            position: relative;
             overflow: hidden;
-            transition: transform .4s var(--ease), box-shadow .4s var(--ease), background .5s ease;
-            opacity: 0;
-            transform: translateY(16px);
-            animation: fadeUp .7s ease .05s forwards;
+            transition: transform .3s var(--ease), box-shadow .3s var(--ease), background .3s var(--ease);
         }
 
         .avatar-preview:hover {
-            transform: translateY(-4px);
+            transform: translateY(-2px);
             box-shadow: var(--shadow-md);
         }
 
-        .avatar-preview img,
-        .avatar-preview canvas {
+        .avatar-preview img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
+            pointer-events: none;
+            user-select: none;
         }
 
         .action-row {
             display: flex;
             justify-content: flex-end;
-            /* ✅ 靠右排列 */
             gap: 12px;
-            /* ✅ 按钮间距 */
-           
         }
 
-        /* 统一基础按钮风格 */
-        .back-box,
-        .save-box {
-            position: relative;
-            /* ✅ 关键：作为 ::before 的定位参考 */
-            overflow: hidden;
-            /* ✅ 防止伪元素跑出按钮外 */
-            text-decoration: none;
-            /* 去掉下划线 */
-            color: #fff;
-            font-weight: 600;
-            font-size: 1.05rem;
-            border-radius: 12px;
-            padding: 10px 18px;
+        .btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
-            transition: transform .3s ease, box-shadow .3s ease;
+            gap: .5em;
+            padding: .7rem 1.1rem;
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: var(--fs-btn);
+            font-family: "Merriweather", serif;
+            color: #fff;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, .12);
+            transition: transform .2s var(--ease), box-shadow .2s var(--ease);
+            position: relative;
+            overflow: hidden;
+            touch-action: manipulation;
         }
 
-        /* Back 按钮：冷色系（蓝灰） */
-        .back-box {
+        .btn:focus-visible {
+            outline: 3px solid #000;
+            outline-offset: 3px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-back {
             background: linear-gradient(135deg, var(--text-secondary), var(--text-primary));
-            box-shadow: 0 4px 15px var(--shadow-sm);
         }
 
-        /* Save 按钮：暖色系（橙） */
-        .save-box {
+        .btn-save {
             background: linear-gradient(135deg, var(--primary-orange), var(--primary-orange-dark));
-            box-shadow: 0 4px 15px rgba(242, 107, 56, .3);
+            box-shadow: 0 8px 22px rgba(242, 107, 56, .35);
         }
 
-        .save-box::before {
+        .btn-save::before {
             content: '';
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.6s ease;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .3), transparent);
+            transition: left .6s ease;
         }
 
-        .save-box:hover::before {
+        .btn-save:hover::before {
             left: 100%;
         }
 
-        .save-box:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 22px rgba(242, 107, 56, .4);
-        }
-
+        /* right */
         .avatar-right {
             display: flex;
             flex-direction: column;
-            gap: 16px;
-            width: 45vw;
-            margin-left: auto;
-            margin-right: 100px;
-            opacity: 0;                           /* 初始隐藏 */
-            transform: translateX(60px);          /* 初始稍微偏右 */
-            animation: slideInRight 0.9s ease-out forwards; /* 播放动画 */
-
+            gap: var(--page-gap);
+            width: 100%;
+            max-width: min(900px, 92vw);
+            margin-inline: auto;
         }
 
+        h2 {
+            font-family: "Merriweather", serif;
+            font-weight: 900;
+            font-size: var(--fs-h2);
+            margin-top: 1.2rem;
+            margin-bottom: .8rem;
+            line-height: 1.2;
+        }
 
         .tag-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(clamp(120px, 28vw, 240px), max-content));
+            gap: clamp(10px, 1.8vw, 16px);
         }
 
         .tag-item {
-            padding: 10px 30px;
+            padding: var(--chip-pad-y) var(--chip-pad-x);
             background: var(--ultra-light);
             border: 2px solid var(--border-color);
-            border-radius: 50px;
+            border-radius: 999px;
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 700;
             color: var(--text-primary);
-            transition: var(--transition-bounce);
-            cursor: default;
+            text-align: center;
+            cursor: pointer;
+            user-select: none;
+            transition: transform .15s var(--ease), box-shadow .15s var(--ease), background .15s, color .15s, border-color .15s;
+            opacity: 0;
+            /* for stagger in */
+            animation: fadeUp .5s ease forwards;
         }
 
         .tag-item:hover {
-            background: linear-gradient(135deg, var(--primary-orange), var(--primary-orange-light));
-            color: var(--bg-main);
-            border-color: var(--primary-orange);
-            transform: translateY(-3px) scale(1.03);
-            box-shadow: 0 4px 16px var(--orange-glow);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, .08);
         }
 
         .tag-item.active {
-            background: linear-gradient(135deg, var(--primary-orange), var(--primary-orange-light));
-            color: var(--bg-main);
+            background: linear-gradient(135deg, var(--primary-orange), #FF8A5B);
             border-color: var(--primary-orange);
-            transform: translateY(-3px) scale(1.03);
-            box-shadow: 0 4px 16px var(--orange-glow);
+            color: #fff;
+            box-shadow: 0 6px 18px rgba(242, 107, 56, .35);
         }
 
-
-
-
-        a {
-            text-decoration: none;
-            /* ✅ 去掉下划线 */
-            color: inherit;
-            /* ✅ 继承父级颜色（不再是蓝色） */
+        /* stagger chips inside each list */
+        #list-personality .tag-item:nth-child(1) {
+            animation-delay: .05s;
         }
-       
 
+        #list-personality .tag-item:nth-child(2) {
+            animation-delay: .10s;
+        }
 
+        #list-personality .tag-item:nth-child(3) {
+            animation-delay: .15s;
+        }
 
+        #list-personality .tag-item:nth-child(4) {
+            animation-delay: .20s;
+        }
+
+        #list-personality .tag-item:nth-child(5) {
+            animation-delay: .25s;
+        }
+
+        #list-personality .tag-item:nth-child(6) {
+            animation-delay: .30s;
+        }
+
+        #list-strength .tag-item:nth-child(1) {
+            animation-delay: .05s;
+        }
+
+        #list-strength .tag-item:nth-child(2) {
+            animation-delay: .10s;
+        }
+
+        #list-strength .tag-item:nth-child(3) {
+            animation-delay: .15s;
+        }
+
+        #list-strength .tag-item:nth-child(4) {
+            animation-delay: .20s;
+        }
+
+        #list-strength .tag-item:nth-child(5) {
+            animation-delay: .25s;
+        }
+
+        #list-strength .tag-item:nth-child(6) {
+            animation-delay: .30s;
+        }
+
+        #list-role .tag-item:nth-child(1) {
+            animation-delay: .05s;
+        }
+
+        #list-role .tag-item:nth-child(2) {
+            animation-delay: .10s;
+        }
+
+        #list-role .tag-item:nth-child(3) {
+            animation-delay: .15s;
+        }
+
+        #list-role .tag-item:nth-child(4) {
+            animation-delay: .20s;
+        }
+
+        #list-role .tag-item:nth-child(5) {
+            animation-delay: .25s;
+        }
+
+        #list-role .tag-item:nth-child(6) {
+            animation-delay: .30s;
+        }
+
+        /* --- entrance keyframes & helpers --- */
         @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px)
+            }
+
             to {
                 opacity: 1;
                 transform: translateY(0)
@@ -239,96 +314,226 @@
         @keyframes slideInDown {
             from {
                 opacity: 0;
-                transform: translateY(-30px);
+                transform: translateY(-28px)
             }
 
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0)
             }
         }
 
-        @media (max-width:600px) {
-            .avatar-left {
-                max-width: 100%;
-                padding: 8px;
-                min-height: 60vh;
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(70px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0)
             }
         }
-        @keyframes slideInRight {
-  0% {
-    opacity: 0;
-    transform: translateX(60px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
+
+        .anim-fadeUp {
+            opacity: 0;
+            animation: fadeUp .6s ease forwards;
+        }
+
+        .anim-slideInDown {
+            opacity: 0;
+            animation: slideInDown .8s cubic-bezier(.4, 0, .2, 1) forwards;
+        }
+
+        .anim-slideInRight {
+            opacity: 0;
+            animation: slideInRight .9s ease-out forwards;
+        }
+
+        .delay-1 {
+            animation-delay: .1s;
+        }
+
+        .delay-2 {
+            animation-delay: .2s;
+        }
+
+        .delay-3 {
+            animation-delay: .3s;
+        }
+
+        .delay-4 {
+            animation-delay: .4s;
+        }
+
+        @media (prefers-reduced-motion:reduce) {
+
+            .anim-fadeUp,
+            .anim-slideInDown,
+            .anim-slideInRight,
+            .tag-item {
+                animation: none !important;
+                opacity: 1 !important;
+                transform: none !important;
+            }
+
+            .avatar-preview,
+            .tag-item,
+            .btn {
+                transition: none;
+            }
+        }
     </style>
 </head>
 
 <body>
-    <section class="avatar-left">
-        <h1 class="avatar-title">I'm a person that... </h1>
+    <main class="page">
+        <!-- Left: title + avatar preview + buttons -->
+        <section class="avatar-left">
+            <h1 class="avatar-title anim-slideInDown">I'm a person that...</h1>
 
-        <div class="avatar-preview" aria-label="Avatar preview area">
+            <div class="avatar-preview anim-fadeUp delay-1" id="preview" aria-label="Avatar preview area">
+                <img id="avatarImg" src="Assets/Avatar8.png" alt="Avatar preview">
+            </div>
 
-            <img id="avatarImg" src="Assets/Avatar8.png" alt="Avatar preview">
-        </div>
+            <div class="action-row anim-fadeUp delay-2">
+                <a href="Avatar1.html" class="btn btn-back" id="backBtn" aria-label="Go back">← Back</a>
+                <a href="Avatar3.html" class="btn btn-save" id="saveBtn" aria-label="Save and continue">💾 Save</a>
+            </div>
+        </section>
 
-        <div class="action-row">
-            <a href="Avatar1.html" class="back-box" id="backBtn" aria-label="Go back">← Back</a>
-            <a href="Avatar3.html" class="save-box" id="saveBtn" aria-label="Save avatar">💾 Save</a>
-        </div>
-    </section>
-    <aside class="avatar-right">
-        <h2>Personality: </h2>
-        <div class="tag-list">
-            <div class="tag-item">Empathetic</div>
-            <div class="tag-item">Adventurous</div>
-            <div class="tag-item">Detail-Oriented</div>
-            <div class="tag-item">Open-Minded</div>
-            <div class="tag-item">Reflective</div>
-            <div class="tag-item">Passionate</div>
-        </div>
-        <h2>Strength: </h2>
-        <div class="tag-list">
-            <div class="tag-item">Technical</div>
-            <div class="tag-item">Research</div>
-            <div class="tag-item">Storytelling</div>
-            <div class="tag-item">Communication</div>
-            <div class="tag-item">Prototyping</div>
-            <div class="tag-item">Visualization</div>
-        </div>
-        <h2>Team Role: </h2>
-        <div class="tag-list">
-            <div class="tag-item">Leader</div>
-            <div class="tag-item">Facilitator</div>
-            <div class="tag-item">Strategist</div>
-            <div class="tag-item">Motivator</div>
-            <div class="tag-item">Innovator</div>
-            <div class="tag-item">Critic</div>
-        </div>
+        <!-- Right: selectable traits -->
+        <aside class="avatar-right anim-slideInRight delay-2" aria-label="Select your traits">
+            <section class="anim-fadeUp delay-2">
+                <h2>Personality:</h2>
+                <div class="tag-list" id="list-personality">
+                    <div class="tag-item" role="button" aria-pressed="false">Empathetic</div>
+                    <div class="tag-item" role="button" aria-pressed="false">Adventurous</div>
+                    <div class="tag-item" role="button" aria-pressed="false">Detail-Oriented</div>
+                    <div class="tag-item" role="button" aria-pressed="false">Open-Minded</div>
+                    <div class="tag-item" role="button" aria-pressed="false">Reflective</div>
+                    <div class="tag-item" role="button" aria-pressed="false">Passionate</div>
+                </div>
+            </section>
 
-    </aside>
-</body>
-<script>
-    const tags = document.querySelectorAll('.tag-item');
+            <section class="anim-fadeUp delay-3">
+                <h2>Strength:</h2>
+                <div class="tag-list" id="list-strength">
+                    <div class="tag-item" role="button" aria-pressed="false">Technical</div>
+                    <div class="tag-item" role="button" aria-pressed="false">Research</div>
+                    <div class="tag-item" role="button" aria-pressed="false">Storytelling</div>
+                    <div class="tag-item" role="button" aria-pressed="false">Communication</div>
+                    <div class="tag-item" role="button" aria-pressed="false">Prototyping</div>
+                    <div class="tag-item" role="button" aria-pressed="false">Visualization</div>
+                </div>
+            </section>
 
-    tags.forEach(tag => {
-        tag.addEventListener('click', () => {
+            <section class="anim-fadeUp delay-4">
+                <h2>Team Role:</h2>
+                <div class="tag-list" id="list-role">
+                    <div class="tag-item" role="button" aria-pressed="false">Leader</div>
+                    <div class="tag-item" role="button" aria-pressed="false">Facilitator</div>
+                    <div class="tag-item" role="button" aria-pressed="false">Strategist</div>
+                    <div class="tag-item" role="button" aria-pressed="false">Motivator</div>
+                    <div class="tag-item" role="button" aria-pressed="false">Innovator</div>
+                    <div class="tag-item" role="button" aria-pressed="false">Critic</div>
+                </div>
+            </section>
+        </aside>
+    </main>
 
-            tag.classList.toggle('active');
+    <script>
+        // --- Restore avatar selection (from Avatar1) ---
+        (function restoreAvatar() {
+            const raw = localStorage.getItem('avatarSelection');
+            if (!raw) return;
+            try {
+                const { avatarSrc, bgColor, bgStyle } = JSON.parse(raw);
+                if (avatarSrc) document.getElementById('avatarImg').src = avatarSrc;
+                const bg = bgStyle || bgColor;
+                if (bg) document.getElementById('preview').style.background = bg;
+            } catch (e) { console.warn('Failed to parse avatarSelection', e); }
+        })();
 
+        // ========= feature/traits: live save to localStorage =========
+        const LIST_IDS = ['list-personality', 'list-strength', 'list-role'];
 
+        function readTraitsFromDOM() {
+            const result = {};
+            for (const id of LIST_IDS) {
+                const active = Array.from(document.querySelectorAll(`#${id} .tag-item.active`))
+                    .map(n => n.textContent.trim());
+                result[id] = active;
+            }
+            return {
+                personality: result['list-personality'] || [],
+                strength: result['list-strength'] || [],
+                teamRole: result['list-role'] || [],
+                _byListId: result,
+                ts: Date.now()
+            };
+        }
+
+        function applyTraitsToDOM(traits) {
+            if (!traits) return;
+            const map = traits._byListId || {
+                'list-personality': traits.personality || [],
+                'list-strength': traits.strength || [],
+                'list-role': traits.teamRole || [],
+            };
+            for (const id of LIST_IDS) {
+                const want = new Set(map[id] || []);
+                document.querySelectorAll(`#${id} .tag-item`).forEach(tag => {
+                    const isActive = want.has(tag.textContent.trim());
+                    tag.classList.toggle('active', isActive);
+                    tag.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+                });
+            }
+        }
+
+        function saveTraitsToLocalStorage() {
+            try { localStorage.setItem('profileTraits', JSON.stringify(readTraitsFromDOM())); }
+            catch (err) { console.warn('Failed to write profileTraits to localStorage:', err); }
+        }
+
+        let saveTimer = null;
+        function saveTraitsDebounced() {
+            clearTimeout(saveTimer);
+            saveTimer = setTimeout(saveTraitsToLocalStorage, 120);
+        }
+
+        function initTagList(root) {
+            root.querySelectorAll('.tag-item').forEach(tag => {
+                tag.tabIndex = 0;
+                const toggle = () => {
+                    const now = tag.getAttribute('aria-pressed') === 'true';
+                    tag.setAttribute('aria-pressed', (!now).toString());
+                    tag.classList.toggle('active', !now);
+                    saveTraitsDebounced();
+                };
+                tag.addEventListener('click', toggle, { passive: true });
+                tag.addEventListener('keydown', (e) => {
+                    if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggle(); }
+                });
+            });
+        }
+
+        (function restoreTraits() {
+            const raw = localStorage.getItem('profileTraits');
+            if (!raw) return;
+            try { applyTraitsToDOM(JSON.parse(raw)); }
+            catch (e) { console.warn('Failed to parse profileTraits:', e); }
+        })();
+
+        LIST_IDS.forEach(id => {
+            const root = document.getElementById(id);
+            if (root) initTagList(root);
         });
-    });
-</script>
 
-
-
-
-
+        document.getElementById('saveBtn')?.addEventListener('click', () => {
+            saveTraitsToLocalStorage(); // ensure latest before leaving
+        });
+    </script>
+</body>
 
 </html>
