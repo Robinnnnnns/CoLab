@@ -77,7 +77,7 @@
         }
 
         /* ============================================
-           HEADER / NAVIGATION
+           HEADER / NAVIGATION - UPDATED TO MATCH LECTURE
         ============================================ */
         .header {
             position: sticky;
@@ -98,28 +98,26 @@
         .nav-container {
             max-width: 1920px;
             margin: 0 auto;
-            padding: 1.2rem 3rem;
+            padding: 1rem 3rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .logo {
-            font-family: 'Merriweather', serif;
-            font-size: 1.5rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, var(--primary-orange), var(--primary-orange-dark));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-decoration: none;
+        .logo-link {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            text-decoration: none;
             transition: transform 0.3s ease;
         }
 
-        .logo:hover {
+        .logo-img {
+            height: 90px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .logo-link:hover {
             transform: scale(1.05);
         }
 
@@ -142,6 +140,10 @@
             color: var(--primary-orange);
         }
 
+        .nav-link.active {
+            color: var(--primary-orange);
+        }
+
         .nav-link::after {
             content: '';
             position: absolute;
@@ -154,14 +156,15 @@
             transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .nav-link:hover::after {
+        .nav-link:hover::after,
+        .nav-link.active::after {
             width: 100%;
         }
 
         .nav-right {
             display: flex;
             align-items: center;
-            gap: 2rem;
+            gap: 1.5rem;
         }
 
         .live-badge {
@@ -187,25 +190,305 @@
             box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
         }
 
-        .theme-toggle {
+        /* Theme Toggle Switch Styles */
+        .theme-switch-wrapper {
+            display: flex;
+            align-items: center;
+        }
+
+        .theme-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 32px;
+        }
+
+        .theme-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background: var(--bg-card);
             border: 2px solid var(--border-color);
-            width: 48px;
-            height: 48px;
+            border-radius: 34px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 6px;
+        }
+
+        .slider-icon {
+            font-size: 14px;
+            transition: opacity 0.3s ease;
+        }
+
+        .slider-icon.sun {
+            opacity: 1;
+        }
+
+        .slider-icon.moon {
+            opacity: 0.3;
+        }
+
+        .theme-switch input:checked ~ .slider {
+            background: var(--primary-orange);
+            border-color: var(--primary-orange);
+        }
+
+        .theme-switch input:checked ~ .slider .sun {
+            opacity: 0.3;
+        }
+
+        .theme-switch input:checked ~ .slider .moon {
+            opacity: 1;
+        }
+
+        .slider::before {
+            content: '';
+            position: absolute;
+            height: 24px;
+            width: 24px;
+            left: 4px;
+            bottom: 2px;
+            background: white;
             border-radius: 50%;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .theme-switch input:checked ~ .slider::before {
+            transform: translateX(28px);
+        }
+
+        /* Profile Button */
+        .profile-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            font-size: 1.3rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: var(--text-secondary);
+            text-decoration: none;
             box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            padding: 0;
         }
 
-        .theme-toggle:hover {
-            transform: scale(1.1) rotate(180deg);
+        .profile-btn:hover {
+            transform: scale(1.1);
             border-color: var(--primary-orange);
+            color: var(--primary-orange);
             box-shadow: var(--shadow-md);
+        }
+
+        .profile-btn-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-btn svg {
+            width: 22px;
+            height: 22px;
+        }
+        
+        /* Profile Dropdown Styles */
+        .profile-dropdown {
+            position: fixed;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            width: 320px;
+            z-index: 10001;
+            opacity: 0;
+            transform: translateY(-20px) scale(0.95);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            visibility: hidden;
+            overflow: hidden;
+        }
+        
+        .profile-dropdown.show {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            visibility: visible;
+        }
+        
+        .profile-dropdown::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            right: 25px;
+            width: 16px;
+            height: 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-right: none;
+            border-bottom: none;
+            transform: rotate(45deg);
+        }
+        
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(242, 107, 56, 0.1), rgba(242, 107, 56, 0.05));
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .profile-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--bg-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            box-shadow: 0 4px 15px rgba(242, 107, 56, 0.3);
+            animation: float 3s ease-in-out infinite;
+            overflow: hidden;
+            border: 2px solid var(--primary-orange);
+        }
+        
+        .profile-avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .profile-info {
+            flex: 1;
+        }
+        
+        .profile-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+        
+        .profile-email {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            padding: 1.5rem;
+            background: var(--bg-main);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 0 0.5rem;
+            border-right: 1px solid var(--border-color);
+        }
+        
+        .stat-item:last-child {
+            border-right: none;
+        }
+        
+        .stat-value {
+            display: block;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-orange);
+            margin-bottom: 0.25rem;
+            animation: countUp 1s ease-out;
+        }
+        
+        .stat-label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .profile-menu {
+            padding: 0.5rem;
+        }
+        
+        .profile-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.9rem 1.2rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            font-size: 0.95rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .profile-menu-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 0;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(242, 107, 56, 0.1));
+            transition: width 0.3s ease;
+        }
+        
+        .profile-menu-item:hover {
+            background: var(--bg-main);
+            color: var(--primary-orange);
+            transform: translateX(5px);
+        }
+        
+        .profile-menu-item:hover::before {
+            width: 100%;
+        }
+        
+        .profile-menu-item.logout {
+            color: #e74c3c;
+        }
+        
+        .profile-menu-item.logout:hover {
+            background: rgba(231, 76, 60, 0.1);
+            color: #c0392b;
+        }
+        
+        .profile-divider {
+            height: 1px;
+            background: var(--border-color);
+            margin: 0.5rem 0;
+        }
+        
+        @keyframes countUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* ============================================
@@ -319,6 +602,7 @@
             margin-bottom: 2.5rem;
         }
 
+        /* Enhanced Design Terms with Tooltips */
         .design-term {
             padding: 0.8rem 1.8rem;
             background: linear-gradient(135deg, var(--primary-orange), var(--primary-orange-dark));
@@ -327,34 +611,117 @@
             font-weight: 600;
             font-size: 1.05rem;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
             box-shadow: 0 4px 15px rgba(242, 107, 56, 0.3);
             position: relative;
             overflow: hidden;
+            display: inline-block;
+            isolation: isolate;
         }
 
+        /* Individual shine effect for each button */
         .design-term::before {
             content: '';
             position: absolute;
             top: 0;
-            left: -100%;
-            width: 100%;
+            left: -150%;
+            width: 150%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.6s ease;
+            background: linear-gradient(
+                90deg, 
+                transparent 0%, 
+                rgba(255, 255, 255, 0.4) 45%,
+                rgba(255, 255, 255, 0.5) 50%,
+                rgba(255, 255, 255, 0.4) 55%,
+                transparent 100%
+            );
+            transform: skewX(-25deg);
+            transition: none;
+            opacity: 0;
         }
 
+        /* Trigger shine animation on hover for each button independently */
         .design-term:hover::before {
-            left: 100%;
+            animation: shineEffect 0.6s ease-out;
         }
 
         .design-term:hover {
-            transform: translateY(-4px) scale(1.05);
+            transform: translateY(-2px) scale(1.02);
             box-shadow: 0 8px 30px rgba(242, 107, 56, 0.5);
         }
 
         .design-term:active {
-            transform: translateY(-2px) scale(1.02);
+            transform: translateY(-1px) scale(1.01);
+        }
+
+        /* Shine animation keyframe */
+        @keyframes shineEffect {
+            0% {
+                left: -150%;
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                left: 150%;
+                opacity: 0;
+            }
+        }
+
+        /* Floating Tooltip - Fixed and Compact */
+        .design-term-tooltip {
+            position: fixed;
+            top: 0;
+            left: 0;
+            min-width: 180px;
+            max-width: 200px;
+            padding: 0.5rem 0.6rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+            z-index: 99999;
+            visibility: hidden;
+        }
+
+        .design-term-tooltip.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .tooltip-title {
+            font-weight: 700;
+            color: var(--primary-orange);
+            font-size: 0.75rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .tooltip-translation {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            margin-bottom: 0.3rem;
+        }
+
+        .tooltip-description {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .tooltip-source {
+            margin-top: 0.3rem;
+            padding-top: 0.3rem;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            font-style: italic;
         }
 
         .key-points {
@@ -1029,27 +1396,49 @@
                 padding: 0.6rem 1.2rem;
                 font-size: 0.9rem;
             }
+            
+            /* Mobile tooltip adjustments */
+            .design-term-tooltip {
+                min-width: 160px;
+                max-width: 180px;
+                padding: 0.4rem 0.5rem;
+            }
+            
+            .tooltip-title {
+                font-size: 0.7rem;
+            }
+            
+            .tooltip-translation {
+                font-size: 0.6rem;
+            }
+            
+            .tooltip-description {
+                font-size: 0.65rem;
+            }
+            
+            .tooltip-source {
+                font-size: 0.55rem;
+            }
         }
     </style>
 </head>
 
 <body>
     <!-- ============================================
-         HEADER / NAVIGATION
+         HEADER / NAVIGATION - UPDATED WITH HOME AND LECTURE
     ============================================ -->
     <header class="header" id="header">
         <nav class="nav-container">
-            <a href="#" class="logo">
-                <span>🎨</span>
-                <span>DesignLive</span>
+            <a href="#" class="logo-link">
+                <img src="assets/logo.png" alt="CoLab Logo" class="logo-img">
             </a>
 
             <ul class="nav-menu">
-                <li><a href="Lecture.html" class="nav-link">Home</a></li>
-                <li><a href="#" class="nav-link">Canva</a></li>
-                <li><a href="#" class="nav-link">Workshop</a></li>
-                <li><a href="#" class="nav-link">To do</a></li>
-                <li><a href="#" class="nav-link">Help</a></li>
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="lecture.html" class="nav-link">Lecture</a></li>
+                <li><a href="Tut.html" class="nav-link active">Tutorial</a></li>
+                <li><a href="https://canvas.sydney.edu.au/" target="_blank" class="nav-link">Canvas</a></li>
+                <li><a href="#" class="nav-link">TeamUp</a></li>
             </ul>
 
             <div class="nav-right">
@@ -1057,9 +1446,22 @@
                     <span class="live-dot"></span>
                     LIVE
                 </div>
-                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-                    ☀️
-                </button>
+                
+                <!-- Theme Toggle Switch -->
+                <div class="theme-switch-wrapper">
+                    <label class="theme-switch">
+                        <input type="checkbox" id="themeToggle">
+                        <span class="slider">
+                            <span class="slider-icon sun">☀️</span>
+                            <span class="slider-icon moon">🌙</span>
+                        </span>
+                    </label>
+                </div>
+                
+                <!-- Profile Button -->
+                <a href="#" class="profile-btn" aria-label="User Profile">
+                    <img src="assets/Avatar3.png" alt="Profile" class="profile-btn-img">
+                </a>
             </div>
         </nav>
     </header>
@@ -1091,10 +1493,10 @@
                         <h1 class="whiteboard-title">Core Design Principles</h1>
 
                         <div class="design-terms">
-                            <span class="design-term" onclick="openAITerm('Kerning')">Kerning</span>
-                            <span class="design-term" onclick="openAITerm('Visual Rhythm')">Visual Rhythm</span>
-                            <span class="design-term" onclick="openAITerm('Negative Space')">Negative Space</span>
-                            <span class="design-term" onclick="openAITerm('Hierarchy')">Hierarchy</span>
+                            <span class="design-term" data-term="Kerning" data-translation="字距調整" data-description="The adjustment of space between individual letter pairs to achieve visually pleasing and readable typography. Professional designers fine-tune kerning to create harmonious text." data-source="Typography Fundamentals">Kerning</span>
+                            <span class="design-term" data-term="Visual Rhythm" data-translation="視覺節奏" data-description="The pattern created by repeating visual elements that guide the eye through a composition. It creates a sense of organized movement and helps establish visual hierarchy." data-source="Design Systems Theory">Visual Rhythm</span>
+                            <span class="design-term" data-term="Negative Space" data-translation="負空間" data-description="The empty space around and between design elements. Also called white space, it's crucial for creating balance, improving readability, and directing viewer attention." data-source="Gestalt Psychology">Negative Space</span>
+                            <span class="design-term" data-term="Hierarchy" data-translation="視覺層級" data-description="The arrangement of elements to show their order of importance through size, color, contrast, and placement. Good hierarchy guides viewers through content naturally." data-source="Information Architecture">Hierarchy</span>
                         </div>
 
                         <div class="key-points">
@@ -1166,8 +1568,7 @@
                             <span class="ai-badge">AI</span>
                         </div>
                         <div class="ai-message-content">
-                            Hi! I'm your AI design assistant. Click on any highlighted term in the video above, or ask
-                            me questions about typography and design principles.
+                            Hi! I'm your AI design assistant. Hover over any highlighted term in the video above to see detailed explanations, or ask me questions about typography and design principles.
                         </div>
                     </div>
 
@@ -1276,6 +1677,67 @@
          JAVASCRIPT
     ============================================ -->
     <script>
+        // ============================================
+        // TOOLTIP SYSTEM - Create and manage floating tooltips
+        // ============================================
+        
+        // Create tooltip element
+        const tooltip = document.createElement('div');
+        tooltip.className = 'design-term-tooltip';
+        document.body.appendChild(tooltip);
+        
+        // Add event listeners to all design terms
+        const designTerms = document.querySelectorAll('.design-term');
+        let tooltipTimeout;
+        
+        designTerms.forEach(term => {
+            term.addEventListener('mouseenter', function(e) {
+                clearTimeout(tooltipTimeout);
+                const rect = this.getBoundingClientRect();
+                const termData = {
+                    title: this.dataset.term,
+                    translation: this.dataset.translation,
+                    description: this.dataset.description,
+                    source: this.dataset.source
+                };
+                
+                // Set tooltip content
+                tooltip.innerHTML = `
+                    <div class="tooltip-title">${termData.title}</div>
+                    <div class="tooltip-translation">${termData.translation}</div>
+                    <div class="tooltip-description">${termData.description}</div>
+                    <div class="tooltip-source">Source: ${termData.source}</div>
+                `;
+                
+                // Position tooltip above the term
+                const tooltipRect = tooltip.getBoundingClientRect();
+                let left = rect.left + rect.width / 2 - tooltipRect.width / 2;
+                let top = rect.top - tooltipRect.height - 10;
+                
+                // Keep tooltip within viewport
+                if (left < 10) left = 10;
+                if (left + tooltipRect.width > window.innerWidth - 10) {
+                    left = window.innerWidth - tooltipRect.width - 10;
+                }
+                if (top < 10) {
+                    top = rect.bottom + 10; // Show below if not enough space above
+                }
+                
+                tooltip.style.left = left + 'px';
+                tooltip.style.top = top + 'px';
+                
+                // Show tooltip with delay
+                tooltipTimeout = setTimeout(() => {
+                    tooltip.classList.add('show');
+                }, 100);
+            });
+            
+            term.addEventListener('mouseleave', function() {
+                clearTimeout(tooltipTimeout);
+                tooltip.classList.remove('show');
+            });
+        });
+        
         // ============================================
         // DRAWING CANVAS SYSTEM
         // ============================================
@@ -1416,27 +1878,129 @@
         });
 
         // ============================================
-        // THEME TOGGLE
+        // THEME TOGGLE - Updated for switch
         // ============================================
-        const themeToggle = document.getElementById('themeToggle');
+        const themeToggleSwitch = document.getElementById('themeToggle');
         const html = document.documentElement;
 
         const currentTheme = localStorage.getItem('theme') || 'light';
         html.setAttribute('data-theme', currentTheme);
-        updateThemeIcon(currentTheme);
+        themeToggleSwitch.checked = currentTheme === 'dark';
 
-        themeToggle.addEventListener('click', () => {
-            const theme = html.getAttribute('data-theme');
-            const newTheme = theme === 'light' ? 'dark' : 'light';
-
+        themeToggleSwitch.addEventListener('change', () => {
+            const newTheme = themeToggleSwitch.checked ? 'dark' : 'light';
             html.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
-            updateThemeIcon(newTheme);
         });
-
-        function updateThemeIcon(theme) {
-            themeToggle.textContent = theme === 'light' ? '☀️' : '🌙';
+        
+        // ============================================
+        // PROFILE DROPDOWN SYSTEM
+        // ============================================
+        const profileBtn = document.querySelector('.profile-btn');
+        let profileDropdown = null;
+        
+        // Create profile dropdown
+        function createProfileDropdown() {
+            const dropdown = document.createElement('div');
+            dropdown.className = 'profile-dropdown';
+            dropdown.innerHTML = `
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <img src="assets/avatar3.png" alt="Aiden Y" class="profile-avatar-img">
+                    </div>
+                    <div class="profile-info">
+                        <h3 class="profile-name">Aiden Y</h3>
+                        <p class="profile-email">aiden.y@sydney.edu.au</p>
+                    </div>
+                </div>
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <span class="stat-value">42</span>
+                        <span class="stat-label">Courses</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">98%</span>
+                        <span class="stat-label">Progress</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">A+</span>
+                        <span class="stat-label">Grade</span>
+                    </div>
+                </div>
+                <div class="profile-menu">
+                    <a href="#" class="profile-menu-item">
+                        <span>👤</span>
+                        <span>View Profile</span>
+                    </a>
+                    <a href="#" class="profile-menu-item">
+                        <span>⚙️</span>
+                        <span>Settings</span>
+                    </a>
+                    <a href="#" class="profile-menu-item">
+                        <span>📚</span>
+                        <span>My Courses</span>
+                    </a>
+                    <a href="#" class="profile-menu-item">
+                        <span>🏆</span>
+                        <span>Achievements</span>
+                    </a>
+                    <div class="profile-divider"></div>
+                    <a href="#" class="profile-menu-item logout">
+                        <span>🚪</span>
+                        <span>Sign Out</span>
+                    </a>
+                </div>
+            `;
+            document.body.appendChild(dropdown);
+            return dropdown;
         }
+        
+        // Position dropdown
+        function positionDropdown() {
+            if (!profileDropdown) return;
+            const rect = profileBtn.getBoundingClientRect();
+            profileDropdown.style.top = `${rect.bottom + 10}px`;
+            profileDropdown.style.right = `${window.innerWidth - rect.right}px`;
+        }
+        
+        // Toggle dropdown
+        profileBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            if (!profileDropdown) {
+                profileDropdown = createProfileDropdown();
+                setTimeout(() => {
+                    profileDropdown.classList.add('show');
+                    positionDropdown();
+                }, 10);
+            } else {
+                if (profileDropdown.classList.contains('show')) {
+                    profileDropdown.classList.remove('show');
+                    setTimeout(() => {
+                        profileDropdown.remove();
+                        profileDropdown = null;
+                    }, 300);
+                } else {
+                    profileDropdown.classList.add('show');
+                    positionDropdown();
+                }
+            }
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (profileDropdown && !profileDropdown.contains(e.target) && e.target !== profileBtn) {
+                profileDropdown.classList.remove('show');
+                setTimeout(() => {
+                    profileDropdown.remove();
+                    profileDropdown = null;
+                }, 300);
+            }
+        });
+        
+        // Update position on window resize
+        window.addEventListener('resize', positionDropdown);
 
         // ============================================
         // HEADER SCROLL EFFECT
@@ -1544,29 +2108,6 @@
         const aiInput = document.getElementById('aiInput');
         const aiMessages = document.getElementById('aiMessages');
 
-        const termData = {
-            'Kerning': {
-                translation: '字距調整',
-                definition: 'The adjustment of space between individual letter pairs to achieve visually pleasing and readable typography. Professional designers fine-tune kerning to create harmonious text.',
-                source: 'Typography Fundamentals'
-            },
-            'Visual Rhythm': {
-                translation: '視覺節奏',
-                definition: 'The pattern created by repeating visual elements that guide the eye through a composition. It creates a sense of organized movement and helps establish visual hierarchy.',
-                source: 'Design Systems Theory'
-            },
-            'Negative Space': {
-                translation: '負空間',
-                definition: 'The empty space around and between design elements. Also called white space, it\'s crucial for creating balance, improving readability, and directing viewer attention.',
-                source: 'Gestalt Psychology'
-            },
-            'Hierarchy': {
-                translation: '視覺層級',
-                definition: 'The arrangement of elements to show their order of importance through size, color, contrast, and placement. Good hierarchy guides viewers through content naturally.',
-                source: 'Information Architecture'
-            }
-        };
-
         aiInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') sendAIMessage();
         });
@@ -1591,20 +2132,6 @@
             if (lower.includes('space') || lower.includes('white')) return 'Negative space (white space) is a powerful design tool. It improves focus, readability, and creates visual breathing room.';
             if (lower.includes('draw') || lower.includes('pen')) return 'Great question! You can use the pen tool (✏️) to draw annotations directly on the whiteboard. Try clicking it to activate drawing mode!';
             return 'That\'s a great design question! Consider how it relates to visual balance, hierarchy, and user experience. Would you like me to elaborate on any specific aspect?';
-        }
-
-        function openAITerm(term) {
-            const data = termData[term];
-            if (!data) return;
-
-            const message = `
-                <strong>📖 ${term}</strong> (${data.translation})<br><br>
-                <strong>Definition:</strong><br>
-                ${data.definition}<br><br>
-                <strong>Source:</strong> ${data.source}
-            `;
-
-            addAIMessage('AI Assistant', message, true);
         }
 
         function addAIMessage(sender, content, isAI) {
@@ -1703,8 +2230,9 @@
             }
         }, 18000);
 
-        console.log('✨ Tutorial Live Page with Drawing Tools loaded!');
-        console.log('🎨 Try the pen tool to draw on the whiteboard!');
+        console.log('✨ Tutorial Live Page with Drawing Tools and Tooltips loaded!');
+        console.log('🎨 Hover over design terms to see explanations!');
+        console.log('✏️ Try the pen tool to draw on the whiteboard!');
     </script>
 </body>
 
