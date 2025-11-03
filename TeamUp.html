@@ -246,7 +246,7 @@ if (avatarImage) {
     /* Not persistent each refresh */
     try{ localStorage.removeItem('favourites'); localStorage.removeItem('teammates'); }catch(e){}
 
-    const TAG_POOL=["Empathetic","Adventurous","Detail-Oriented","Open-Minded","Reflective","Passionate","Technical","Research","Storytelling","Communication","Prototyping","Visualization","Leader","Facilitator","Strategist","Motivator","Innovator","Critic"];
+    const TAG_POOL=["Calm","Detail-oriented","Empathetic","Open-Minded","Passionate","Reflective","Communication","Concepts","Prototyping","Research","Technical","Visualization","Critic","Facilitator","Implementer","Innovator","Leader","Strategist"];
     function sampleTags(k){const p=[...TAG_POOL];for(let i=p.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[p[i],p[j]]=[p[j],p[i]]}return p.slice(0,k)}
 
     const mePF = document.getElementById('mePF');
