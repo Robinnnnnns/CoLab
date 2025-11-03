@@ -22,6 +22,8 @@
       --orange-light: #FF8C5A;
       --orange-glow: rgba(242, 107, 56, .25);
       --deep-black: #0A0A0A;
+      --charcoal: #1A1A1A;
+      --dark-grey: #2D2D2D;
       --mid-grey: #6E6E6E;
       --light-grey: #DADADA;
       --ultra-light: #F2F2F2;
@@ -34,11 +36,32 @@
       --shadow-lg: 0 8px 32px rgba(0, 0, 0, .12);
       --shadow-xl: 0 16px 48px rgba(0, 0, 0, .16);
       --transition-smooth: all .28s cubic-bezier(.4, 0, .2, 1);
-      --ease: cubic-bezier(.4, 0, .2, 1);
+      --transition-bounce: all .4s cubic-bezier(.34, 1.56, .64, 1);
+      --glass-bg: rgba(255, 255, 255, 0.8);
+      --glass-border: rgba(0, 0, 0, 0.06);
+    }
+
+    /* 暗色主题变量 */
+    [data-theme="dark"] {
+      --deep-black: #FAFAFA;
+      --charcoal: #E8E8E8;
+      --dark-grey: #CCCCCC;
+      --mid-grey: #999999;
+      --light-grey: #404040;
+      --ultra-light: #2A2A2A;
+      --pure-white: #FAFAFA;
+      --card-bg: #1E1E1E;
+      --page-bg: #121212;
+      --border-color: #333333;
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, .4);
+      --shadow-md: 0 4px 16px rgba(0, 0, 0, .5);
+      --shadow-lg: 0 8px 32px rgba(0, 0, 0, .6);
+      --shadow-xl: 0 16px 48px rgba(0, 0, 0, .7);
+      --glass-bg: rgba(26, 26, 26, 0.8);
+      --glass-border: rgba(255, 255, 255, 0.06);
     }
 
     body {
-      --ease: cubic-bezier(.4, 0, .2, 1);
       font-family: 'Inter', sans-serif;
       background: var(--page-bg);
       color: var(--deep-black);
@@ -54,82 +77,84 @@
       font-family: 'Merriweather', serif
     }
 
-    /* NAVBAR */
+    /* ========== 新导航栏（与上页一致） ========== */
     .navbar {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
-      background: var(--primary-orange);
-      height: 88px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 0 64px;
-      box-shadow: var(--shadow-sm);
-      z-index: 9999;
-      border-bottom: 1px solid var(--border-color);
-      transition: height .35s var(--ease), box-shadow .35s ease, background .5s ease;
+      z-index: 1000;
+      background: var(--glass-bg);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      border-bottom: 1px solid var(--glass-border);
+      transition: all .4s cubic-bezier(.4, 0, .2, 1);
     }
 
     .navbar.scrolled {
-      height: 68px;
-      box-shadow: var(--shadow-lg)
+      box-shadow: var(--shadow-md);
     }
 
-    .logo-container {
+    .nav-container {
+      max-width: 1920px;
+      margin: 0 auto;
+      padding: 1rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .logo-link {
       display: flex;
       align-items: center;
-      cursor: pointer;
-      transition: var(--transition-smooth)
+      text-decoration: none;
+      transition: transform .3s ease
     }
 
-    .logo-container:hover {
-      transform: translateY(-2px)
+    .logo-link:hover {
+      transform: scale(1.05)
     }
 
-    .logo-image {
-      height: 52px;
-      transition: var(--transition-smooth)
-    }
-
-    .navbar.scrolled .logo-image {
-      height: 44px
+    .logo-img {
+      height: 90px;
+      width: auto;
+      object-fit: contain
     }
 
     .nav-menu {
       display: flex;
-      gap: 48px;
-      list-style: none;
-      align-items: center;
-      margin: 0 auto
+      gap: 3rem;
+      list-style: none
     }
 
     .nav-link {
-      text-decoration: none;
-      color: #fff;
-      font-size: 15px;
-      font-weight: 600;
-      letter-spacing: .2px;
-      padding: 6px 0;
       position: relative;
-      transition: color .25s ease;
+      color: var(--mid-grey);
+      text-decoration: none;
+      font-weight: 500;
+      padding: .5rem 0;
+      transition: color .3s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--primary-orange)
+    }
+
+    .nav-link.active {
+      color: var(--primary-orange)
     }
 
     .nav-link::after {
       content: '';
       position: absolute;
-      bottom: 0;
-      left: 0;
+      bottom: -2px;
+      left: 50%;
+      transform: translateX(-50%);
       width: 0;
-      height: 2.5px;
+      height: 2px;
       background: linear-gradient(90deg, var(--primary-orange), var(--orange-light));
-      border-radius: 2px;
-      transition: width .35s var(--ease);
-    }
-
-    .nav-link:hover {
-      color: var(--light-grey)
+      transition: width .4s cubic-bezier(.4, 0, .2, 1);
     }
 
     .nav-link:hover::after,
@@ -137,52 +162,303 @@
       width: 100%
     }
 
-    /* Avatar (inherits from localStorage) */
-    .avatar-container {
-      width: 50px;
-      height: 50px;
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem
+    }
+
+    /* 主题开关 */
+    .theme-switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 32px
+    }
+
+    .theme-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0
+    }
+
+    .slider {
+      position: absolute;
+      inset: 0;
+      cursor: pointer;
+      background: var(--card-bg);
+      border: 2px solid var(--border-color);
+      border-radius: 34px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 6px;
+      transition: all .4s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    .slider::before {
+      content: '';
+      position: absolute;
+      height: 24px;
+      width: 24px;
+      left: 4px;
+      bottom: 2px;
+      background: #fff;
       border-radius: 50%;
-      overflow: hidden;
-      background: var(--avatar-bg, #e5e5e5);
-      border: 1px solid var(--border-color);
-      box-shadow: var(--shadow-lg);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+      transition: all .4s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    .slider .sun {
+      font-size: 14px;
+      opacity: 1;
+      transition: opacity .3s ease
+    }
+
+    .slider .moon {
+      font-size: 14px;
+      opacity: .3;
+      transition: opacity .3s ease
+    }
+
+    .theme-switch input:checked~.slider {
+      background: var(--primary-orange);
+      border-color: var(--primary-orange)
+    }
+
+    .theme-switch input:checked~.slider .sun {
+      opacity: .3
+    }
+
+    .theme-switch input:checked~.slider .moon {
+      opacity: 1
+    }
+
+    .theme-switch input:checked~.slider::before {
+      transform: translateX(28px)
+    }
+
+    /* 个人头像按钮 */
+    .profile-btn {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: var(--card-bg);
+      border: 2px solid var(--border-color);
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-left: 16px;
-      transition: var(--transition-smooth);
+      cursor: pointer;
+      transition: all .3s cubic-bezier(.4, 0, .2, 1);
+      color: var(--mid-grey);
+      text-decoration: none;
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      padding: 0;
     }
 
-    .avatar-img {
+    .profile-btn:hover {
+      transform: scale(1.1);
+      border-color: var(--primary-orange);
+      color: var(--primary-orange);
+      box-shadow: var(--shadow-md);
+    }
+
+    .profile-btn-img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: cover
+    }
+
+    /* 头像下拉 */
+    .profile-dropdown {
+      position: fixed;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, .15);
+      width: 320px;
+      z-index: 10001;
+      opacity: 0;
+      transform: translateY(-20px) scale(.95);
+      visibility: hidden;
+      overflow: hidden;
+      transition: all .3s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    .profile-dropdown.show {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      visibility: visible
+    }
+
+    .profile-dropdown::before {
+      content: '';
+      position: absolute;
+      top: -8px;
+      right: 25px;
+      width: 16px;
+      height: 16px;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-right: none;
+      border-bottom: none;
+      transform: rotate(45deg);
+    }
+
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.5rem;
+      background: linear-gradient(135deg, rgba(242, 107, 56, .1), rgba(242, 107, 56, .05));
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .profile-avatar {
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
+      background: var(--page-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(242, 107, 56, .3);
+      border: 2px solid var(--primary-orange);
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .profile-avatar-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover
+    }
+
+    .profile-info {
+      flex: 1
+    }
+
+    .profile-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--deep-black);
+      margin-bottom: .25rem
+    }
+
+    .profile-email {
+      font-size: .85rem;
+      color: var(--mid-grey)
+    }
+
+    .profile-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      padding: 1.5rem;
+      background: var(--page-bg);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: 0 .5rem;
+      border-right: 1px solid var(--border-color)
+    }
+
+    .stat-item:last-child {
+      border-right: none
+    }
+
+    .stat-value {
       display: block;
-      transition: transform .25s ease
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--primary-orange);
+      margin-bottom: .25rem;
+      animation: countUp 1s ease-out
     }
 
-    .avatar-img[src=""],
-    .avatar-img:not([src]) {
-      display: none
+    .stat-label {
+      display: block;
+      font-size: .75rem;
+      color: var(--mid-grey);
+      text-transform: uppercase;
+      letter-spacing: .5px
     }
 
-    .avatar-container:hover {
-      box-shadow: var(--shadow-xl);
-      transform: translateY(-3px)
+    .profile-menu {
+      padding: .5rem
     }
 
-    .avatar-container:hover .avatar-img {
-      transform: scale(1.05)
+    .profile-menu-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: .9rem 1.2rem;
+      color: var(--mid-grey);
+      text-decoration: none;
+      border-radius: 12px;
+      transition: all .2s ease;
+      font-size: .95rem;
+      position: relative;
+      overflow: hidden;
     }
 
-    /* Cards */
+    .profile-menu-item:hover {
+      background: var(--page-bg);
+      color: var(--primary-orange);
+      transform: translateX(5px)
+    }
+
+    .profile-divider {
+      height: 1px;
+      background: var(--border-color);
+      margin: .5rem 0
+    }
+
+    .logout {
+      color: #e74c3c
+    }
+
+    .logout:hover {
+      background: rgba(231, 76, 60, .1);
+      color: #c0392b
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0)
+      }
+
+      50% {
+        transform: translateY(-10px)
+      }
+    }
+
+    @keyframes countUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    /* ===== 主内容 ===== */
     .card-wrapper {
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      transform: translateY(5vh)
+      transform: translateY(5vh);
+      padding-top: 128px;
+      /* 顶部留出导航高度 */
     }
 
     .card-grid {
@@ -190,7 +466,8 @@
       grid-template-columns: repeat(4, 1fr);
       gap: 12px;
       padding: 24px;
-      animation: fadeInUp .6s var(--ease) .15s both;
+      animation: fadeInUp .6s cubic-bezier(.4, 0, .2, 1) .15s both;
+      width: min(1400px, 96vw);
     }
 
     .vcard {
@@ -203,8 +480,7 @@
       display: flex;
       flex-direction: column;
       min-height: 500px;
-      /* 高度适中 */
-      animation: fadeInUp .6s var(--ease) both;
+      animation: fadeInUp .6s cubic-bezier(.4, 0, .2, 1) both;
     }
 
     .card-grid .vcard:nth-child(1) {
@@ -254,7 +530,6 @@
       line-height: 1.3
     }
 
-    /* 介绍文本：默认两行，左对齐 + 展开 */
     .vcard-desc {
       font-size: 14px;
       color: #666;
@@ -292,7 +567,6 @@
       color: #333
     }
 
-    /* 按钮区：居中 + 徽章风格（无下划线） */
     .vcard-links {
       display: flex;
       justify-content: center;
@@ -315,8 +589,7 @@
       border: 1px solid var(--border-color);
       transition: var(--transition-smooth);
       text-decoration: none;
-      /* 去下划线 */
-      animation: badgeIn .6s var(--ease) both;
+      animation: badgeIn .6s cubic-bezier(.4, 0, .2, 1) both;
     }
 
     .meta-badge:hover {
@@ -327,7 +600,7 @@
       box-shadow: var(--shadow-md);
     }
 
-    /* Responsive */
+    /* 响应式 */
     @media (max-width:1200px) {
       .card-grid {
         grid-template-columns: repeat(3, 1fr)
@@ -346,7 +619,7 @@
       }
     }
 
-    /* Animations */
+    /* 动画 */
     @keyframes fadeInUp {
       from {
         opacity: 0;
@@ -370,28 +643,94 @@
         transform: translateY(0)
       }
     }
+
+    /* ===== 暗色可读性修复（姓名/列表/标签/按钮等） ===== */
+    [data-theme="dark"] body {
+      color: var(--pure-white)
+    }
+
+    [data-theme="dark"] .vcard,
+    [data-theme="dark"] .vcard .vcard-body,
+    [data-theme="dark"] .vcard .vcard-desc,
+    [data-theme="dark"] .vcard .vcard-title {
+      background: var(--card-bg);
+      color: var(--pure-white);
+      border-color: var(--light-grey);
+    }
+
+    [data-theme="dark"] .meta-badge {
+      background: rgba(255, 255, 255, .08);
+      color: var(--pure-white);
+      border-color: var(--light-grey);
+    }
+
+    /* 小屏优化 */
+    @media (max-width:768px) {
+      .nav-container {
+        padding: 1rem 1.75rem
+      }
+
+      .logo-img {
+        height: 70px
+      }
+
+      .nav-menu {
+        gap: 2rem
+      }
+
+      .card-wrapper {
+        padding-top: 120px
+      }
+    }
+
+    @media (max-width:480px) {
+      .nav-container {
+        padding: 1rem
+      }
+
+      .card-wrapper {
+        padding-top: 110px
+      }
+    }
   </style>
 </head>
 
 <body>
-  <!-- Navigation Bar -->
+  <!-- 新导航 -->
   <nav class="navbar" id="navbar">
-    <div class="logo-container">
-      <img src="Assets/1.png" alt="University Logo" class="logo-image">
+    <div class="nav-container">
+      <a href="#" class="logo-link">
+        <img src="Assets/Logo.png" alt="University Logo" class="logo-img">
+      </a>
+
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="#" class="nav-link active">Home</a></li>
+        <li><a href="Lecture.html" class="nav-link">Lecture</a></li>
+        <li><a href="Tut.html" class="nav-link">Tutorial</a></li>
+        <li><a href="https://canvas.sydney.edu.au/" class="nav-link"
+            target="_blank">Canvas</a></li>
+        <li><a href="TeamUp.html" class="nav-link">TeamUp</a></li>
+      </ul>
+
+      <div class="nav-right">
+        <!-- 主题开关 -->
+        <label class="theme-switch">
+          <input type="checkbox" id="themeToggle">
+          <span class="slider">
+            <span class="sun">☀️</span>
+            <span class="moon">🌙</span>
+          </span>
+        </label>
+
+        <!-- 头像按钮（本地继承） -->
+        <a href="#" class="profile-btn" aria-label="User Profile">
+          <img id="profileImg" alt="Profile" class="profile-btn-img">
+        </a>
+      </div>
     </div>
-    <ul class="nav-menu" id="navMenu">
-      <li class="nav-item"><a href="#" class="nav-link">Home</a></li>
-      <li class="nav-item"><a href="Lecture.html" class="nav-link">Lecture</a></li>
-      <li class="nav-item"><a href="Tut.html" class="nav-link">Tutorial</a></li>
-      <li class="nav-item"><a href="https://www.sydney.edu.au/students/canvas/accessing-canvas.html" class="nav-link">Canvas</a></li>
-      <li class="nav-item"><a href="TeamUp.html" class="nav-link">TeamUp</a></li>
-    </ul>
-    <a href="#" class="avatar-container" style="--avatar-bg:#b8d8ff;">
-      <img src="#" alt="" class="avatar-img">
-    </a>
   </nav>
 
-  <!-- Main Content -->
+  <!-- 主内容 -->
   <div class="card-wrapper">
     <section class="section-card">
       <div class="card-grid">
@@ -404,17 +743,25 @@
           <div class="vcard-body">
             <h3 class="vcard-title">IDEA9105 Interface Design</h3>
             <p class="vcard-desc">
-              This unit introduces students to the fundamentals of user interface design. Interface design is an important element of
-              a human-centred design approach to the development of interactive computational systems. Students will learn about
-              industry standard user interface design and usability principles and guidelines, based in visual design theory and
-              visual perception. They will acquire practical knowledge through the application of tools and techniques for designing
-              and evaluating user interfaces for a variety of different platforms. This includes (1) low-fidelity prototyping (hand
-              sketches, wireframes, clickable prototypes); (2) usability testing and heuristics; (3) web and mobile user interfaces
-              and/or emerging technologies. The aim is to develop appreciation of visual design principles and their impact on the
-              user experience of interactive products. The knowledge and skills developed in this unit will equip students with the
-              essential capabilities for working in the interaction design and user experience profession. This unit is a foundational
+              This unit introduces students to the fundamentals of user interface design. Interface design is an
+              important element of
+              a human-centred design approach to the development of interactive computational systems. Students will
+              learn about
+              industry standard user interface design and usability principles and guidelines, based in visual design
+              theory and
+              visual perception. They will acquire practical knowledge through the application of tools and techniques
+              for designing
+              and evaluating user interfaces for a variety of different platforms. This includes (1) low-fidelity
+              prototyping (hand
+              sketches, wireframes, clickable prototypes); (2) usability testing and heuristics; (3) web and mobile user
+              interfaces
+              and/or emerging technologies. The aim is to develop appreciation of visual design principles and their
+              impact on the
+              user experience of interactive products. The knowledge and skills developed in this unit will equip
+              students with the
+              essential capabilities for working in the interaction design and user experience profession. This unit is
+              a foundational
               core unit in the Master of Interaction Design and Electronic Arts program.
-
             </p>
             <button class="expand-btn">··· More</button>
             <div class="vcard-links">
@@ -433,12 +780,12 @@
             <h3 class="vcard-title">IDEA9106 Design Thinking</h3>
             <p class="vcard-desc">
               This unit of study provides an overview of a human-centred approach to the design of products and systems.
-              It introduces
-              students to design thinking and how it can be productively applied to different design situations. The
-              theoretical
-              concepts, methods and tools for the key stages of interaction design are covered including user research,
-              ideation,
-              prototyping and user evaluation. It provides students with the principles, processes and tools for working
+              It introduces students to design thinking and how it can be productively applied to different design
+              situations. The
+              theoretical concepts, methods and tools for the key stages of interaction design are covered including
+              user research,
+              ideation, prototyping and user evaluation. It provides students with the principles, processes and tools
+              for working
               collaboratively on design projects in studio. Students learn to build empathy with users, identify and
               reframe the
               problem space, develop value-driven design concepts and persuasively communicate design proposals with an
@@ -464,22 +811,21 @@
             <h3 class="vcard-title">IDEA9103 Creative Coding</h3>
             <p class="vcard-desc">
               This unit provides an introduction to the development of software in design and the creative industries.
-              It teaches an
-              understanding of the fundamentals of computational thinking, as well as skills in the design and
-              implementation of
-              software for creative expression. It introduces students to tools for building interactive design
-              prototypes that
-              express their interaction design skills through programming. It covers knowledge of programming concepts,
-              creative
-              coding practices, and their practical implementation through Javascript, HTML, and CSS. Key concepts
-              covered in this
-              unit include: variables, functions, control flows, and algorithmic thinking. Students learn how to
-              approach creative
-              expression through the medium of code, which will allow them to incorporate programming into their own
-              design practice
-              as well as to collaborate effectively with software developers. This unit is a foundational core unit in
-              the Master of
-              Interaction Design and Electronic Arts program.
+              It teaches an understanding of the fundamentals of computational thinking, as well as skills in the design
+              and
+              implementation of software for creative expression. It introduces students to tools for building
+              interactive design
+              prototypes that express their interaction design skills through programming. It covers knowledge of
+              programming concepts,
+              creative coding practices, and their practical implementation through Javascript, HTML, and CSS. Key
+              concepts
+              covered in this unit include: variables, functions, control flows, and algorithmic thinking. Students
+              learn how to
+              approach creative expression through the medium of code, which will allow them to incorporate programming
+              into their own
+              design practice as well as to collaborate effectively with software developers. This unit is a
+              foundational core unit in
+              the Master of Interaction Design and Electronic Arts program.
             </p>
             <button class="expand-btn">··· More</button>
             <div class="vcard-links">
@@ -498,18 +844,17 @@
             <h3 class="vcard-title">DESN9004 Design Practices</h3>
             <p class="vcard-desc">
               In this subject, you will gain an understanding of design-led innovation concepts, practices and
-              approaches. You will
-              explore design-based innovation issues and use critical thinking to explore various notions of design
-              value. This
-              subject explores different modes of inquiry and encourages students to develop a diverse range of research
-              practices.
-              Knowledge and understanding of design thinking gained from other units will be applied via critical
-              thinking to
-              practical design topics. Students learn how to engage with design innovation (or is that innovative
-              design?) practices,
-              as well as engaging with practical design and innovation challenges. Students will leave this course with
-              a
-              comprehensive understanding of design innovation principles, as well as practices drawing on critical
+              approaches. You will explore design-based innovation issues and use critical thinking to explore various
+              notions of design
+              value. This subject explores different modes of inquiry and encourages students to develop a diverse range
+              of research
+              practices. Knowledge and understanding of design thinking gained from other units will be applied via
+              critical
+              thinking to practical design topics. Students learn how to engage with design innovation (or is that
+              innovative
+              design?) practices, as well as engaging with practical design and innovation challenges. Students will
+              leave this course with
+              a comprehensive understanding of design innovation principles, as well as practices drawing on critical
               design thinking
               and design methods and approaches.
             </p>
@@ -526,7 +871,7 @@
   </div>
 
   <script>
-    // Show more / less
+    /* 展开/收起 */
     document.querySelectorAll('.expand-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const desc = btn.previousElementSibling;
@@ -536,24 +881,131 @@
       });
     });
 
-    // Navbar shrink on scroll
+    /* 导航滚动阴影 */
     const navbar = document.getElementById('navbar');
-    const onScroll = () => { if (window.scrollY > 12) navbar.classList.add('scrolled'); else navbar.classList.remove('scrolled'); };
+    const onScroll = () => {
+      if (window.scrollY > 12) navbar.classList.add('scrolled');
+      else navbar.classList.remove('scrolled');
+    };
     document.addEventListener('scroll', onScroll, { passive: true }); onScroll();
 
-    // Inherit avatar from previous page (Avatar3)
-    (function restoreAvatar() {
+    /* 主题持久化 */
+    const themeToggleSwitch = document.getElementById('themeToggle');
+    const html = document.documentElement;
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    html.setAttribute('data-theme', currentTheme);
+    themeToggleSwitch.checked = currentTheme === 'dark';
+    themeToggleSwitch.addEventListener('change', () => {
+      const newTheme = themeToggleSwitch.checked ? 'dark' : 'light';
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+    });
+
+    /* 头像下拉 */
+    const profileBtn = document.querySelector('.profile-btn');
+    let profileDropdown = null;
+
+    function createProfileDropdown() {
+      const dropdown = document.createElement('div');
+      dropdown.className = 'profile-dropdown';
+      dropdown.innerHTML = `
+        <div class="profile-header">
+          <div class="profile-avatar" id="ddAvatar">
+            <img id="ddAvatarImg" alt="User" class="profile-avatar-img">
+          </div>
+          <div class="profile-info">
+            <h3 class="profile-name">Aiden Y</h3>
+            <p class="profile-email">aiden.y@sydney.edu.au</p>
+          </div>
+        </div>
+        <div class="profile-stats">
+          <div class="stat-item"><span class="stat-value">42</span><span class="stat-label">Courses</span></div>
+          <div class="stat-item"><span class="stat-value">98%</span><span class="stat-label">Progress</span></div>
+          <div class="stat-item"><span class="stat-value">A+</span><span class="stat-label">Grade</span></div>
+        </div>
+        <div class="profile-menu">
+          <a href="#" class="profile-menu-item"><span>👤</span><span>View Profile</span></a>
+          <a href="#" class="profile-menu-item"><span>⚙️</span><span>Settings</span></a>
+          <a href="#" class="profile-menu-item"><span>📚</span><span>My Courses</span></a>
+          <a href="#" class="profile-menu-item"><span>🏆</span><span>Achievements</span></a>
+          <div class="profile-divider"></div>
+          <a href="#" class="profile-menu-item logout"><span>🚪</span><span>Sign Out</span></a>
+        </div>
+      `;
+      document.body.appendChild(dropdown);
+      return dropdown;
+    }
+
+    function positionDropdown() {
+      if (!profileDropdown) return;
+      const rect = profileBtn.getBoundingClientRect();
+      profileDropdown.style.top = `${rect.bottom + 10}px`;
+      profileDropdown.style.right = `${window.innerWidth - rect.right}px`;
+    }
+
+    profileBtn.addEventListener('click', (e) => {
+      e.preventDefault(); e.stopPropagation();
+      if (!profileDropdown) {
+        profileDropdown = createProfileDropdown();
+        // 将本地头像也同步到下拉面板
+        syncAvatarToDropdown();
+        setTimeout(() => { profileDropdown.classList.add('show'); positionDropdown(); }, 10);
+      } else {
+        if (profileDropdown.classList.contains('show')) {
+          profileDropdown.classList.remove('show');
+          setTimeout(() => { profileDropdown.remove(); profileDropdown = null; }, 300);
+        } else {
+          profileDropdown.classList.add('show');
+          positionDropdown();
+        }
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (profileDropdown && !profileDropdown.contains(e.target) && e.target !== profileBtn) {
+        profileDropdown.classList.remove('show');
+        setTimeout(() => { profileDropdown.remove(); profileDropdown = null; }, 300);
+      }
+    });
+    window.addEventListener('resize', positionDropdown);
+
+    /* 从 localStorage 继承头像与背景 */
+    function restoreAvatar() {
       try {
         const raw = localStorage.getItem('avatarSelection');
-        if (!raw) return;
-        const sel = JSON.parse(raw);
-        const img = document.querySelector('.avatar-img');
-        const container = document.querySelector('.avatar-container');
-        if (sel.avatarSrc && img) img.src = sel.avatarSrc;
-        const bg = sel.bgStyle || sel.bgColor;
-        if (bg && container) container.style.setProperty('--avatar-bg', bg);
+        const img = document.getElementById('profileImg');
+        if (!raw) { img && (img.src = ''); return; }
+        const { avatarSrc, bgColor, bgStyle } = JSON.parse(raw);
+        if (img && avatarSrc) { img.src = avatarSrc; }
+        const bg = bgStyle || bgColor;
+        if (bg) { profileBtn.style.background = bg; }
       } catch (e) { console.warn('restore avatarSelection failed', e); }
-    })();
+    }
+    function syncAvatarToDropdown() {
+      try {
+        const raw = localStorage.getItem('avatarSelection');
+        if (!raw || !profileDropdown) return;
+        const { avatarSrc, bgColor, bgStyle } = JSON.parse(raw);
+        const ddImg = document.getElementById('ddAvatarImg');
+        const ddBox = document.getElementById('ddAvatar');
+        if (ddImg && avatarSrc) { ddImg.src = avatarSrc; }
+        const bg = bgStyle || bgColor;
+        if (ddBox && bg) { ddBox.style.background = bg; }
+      } catch (e) { console.warn('sync dropdown avatar failed', e); }
+    }
+
+    restoreAvatar();
+
+    /* 导航 active 切换（外链不改 active） */
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        if (!link.hasAttribute('target')) {
+          navLinks.forEach(l => l.classList.remove('active'));
+          link.classList.add('active');
+        }
+      });
+    });
   </script>
 </body>
 

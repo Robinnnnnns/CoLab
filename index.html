@@ -22,6 +22,8 @@
             --orange-light: #FF8C5A;
             --orange-glow: rgba(242, 107, 56, .25);
             --deep-black: #0A0A0A;
+            --charcoal: #1A1A1A;
+            --dark-grey: #2D2D2D;
             --mid-grey: #6E6E6E;
             --light-grey: #DADADA;
             --ultra-light: #F2F2F2;
@@ -34,7 +36,28 @@
             --shadow-lg: 0 8px 32px rgba(0, 0, 0, .12);
             --shadow-xl: 0 16px 48px rgba(0, 0, 0, .16);
             --transition-smooth: all .28s cubic-bezier(.4, 0, .2, 1);
-            --ease: cubic-bezier(.4, 0, .2, 1);
+            --transition-bounce: all .4s cubic-bezier(.34, 1.56, .64, 1);
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --glass-border: rgba(0, 0, 0, 0.06)
+        }
+
+        [data-theme="dark"] {
+            --deep-black: #FAFAFA;
+            --charcoal: #E8E8E8;
+            --dark-grey: #CCCCCC;
+            --mid-grey: #999999;
+            --light-grey: #404040;
+            --ultra-light: #2A2A2A;
+            --pure-white: #FAFAFA;
+            --card-bg: #1E1E1E;
+            --page-bg: #121212;
+            --border-color: #333333;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, .4);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, .5);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, .6);
+            --shadow-xl: 0 16px 48px rgba(0, 0, 0, .7);
+            --glass-bg: rgba(26, 26, 26, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.06)
         }
 
         body {
@@ -43,7 +66,7 @@
             color: var(--deep-black);
             line-height: 1.7;
             overflow-x: hidden;
-            transition: background .5s ease, color .5s ease;
+            transition: background .5s ease, color .5s ease
         }
 
         h1,
@@ -53,82 +76,84 @@
             font-family: 'Merriweather', serif
         }
 
-        /* NAVBAR */
+        /* 导航 */
         .navbar {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            background: var(--primary-orange);
-            height: 88px;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 0 64px;
-            box-shadow: var(--shadow-sm);
-            z-index: 9999;
-            border-bottom: 1px solid var(--border-color);
-            transition: height .35s var(--ease), box-shadow .35s ease, background .5s ease;
+            z-index: 1000;
+            background: var(--glass-bg);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-bottom: 1px solid var(--glass-border);
+            transition: all .4s cubic-bezier(.4, 0, .2, 1)
         }
 
         .navbar.scrolled {
-            height: 68px;
-            box-shadow: var(--shadow-lg)
+            box-shadow: var(--shadow-md)
         }
 
-        .logo-container {
+        .nav-container {
+            max-width: 1920px;
+            margin: 0 auto;
+            padding: 1rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 24px
+        }
+
+        .logo-link {
             display: flex;
             align-items: center;
-            cursor: pointer;
-            transition: var(--transition-smooth)
+            text-decoration: none;
+            transition: transform .3s ease
         }
 
-        .logo-container:hover {
-            transform: translateY(-2px)
+        .logo-link:hover {
+            transform: scale(1.05)
         }
 
-        .logo-image {
-            height: 52px;
-            transition: var(--transition-smooth)
-        }
-
-        .navbar.scrolled .logo-image {
-            height: 44px
+        .logo-img {
+            height: 90px;
+            width: auto;
+            object-fit: contain
         }
 
         .nav-menu {
             display: flex;
-            gap: 48px;
-            list-style: none;
-            align-items: center;
-            margin: 0 auto
+            gap: 3rem;
+            list-style: none
         }
 
         .nav-link {
-            text-decoration: none;
-            color: #fff;
-            font-size: 15px;
-            font-weight: 600;
-            letter-spacing: .2px;
-            padding: 6px 0;
             position: relative;
-            transition: color .25s ease;
+            color: var(--mid-grey);
+            text-decoration: none;
+            font-weight: 500;
+            padding: .5rem 0;
+            transition: color .3s ease
+        }
+
+        .nav-link:hover {
+            color: var(--primary-orange)
+        }
+
+        .nav-link.active {
+            color: var(--primary-orange)
         }
 
         .nav-link::after {
             content: '';
             position: absolute;
-            bottom: 0;
-            left: 0;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
             width: 0;
-            height: 2.5px;
+            height: 2px;
             background: linear-gradient(90deg, var(--primary-orange), var(--orange-light));
-            border-radius: 2px;
-            transition: width .35s var(--ease);
-        }
-
-        .nav-link:hover {
-            color: var(--light-grey)
+            transition: width .4s cubic-bezier(.4, 0, .2, 1)
         }
 
         .nav-link:hover::after,
@@ -136,53 +161,117 @@
             width: 100%
         }
 
-        /* Avatar (no localStorage; default empty) */
-        .avatar-container {
-            width: 50px;
-            height: 50px;
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem
+        }
+
+        /* 主题开关 */
+        .theme-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 32px
+        }
+
+        .theme-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0
+        }
+
+        .slider {
+            position: absolute;
+            inset: 0;
+            cursor: pointer;
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 34px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 6px;
+            transition: all .4s cubic-bezier(.4, 0, .2, 1)
+        }
+
+        .slider::before {
+            content: '';
+            position: absolute;
+            height: 24px;
+            width: 24px;
+            left: 4px;
+            bottom: 2px;
+            background: #fff;
             border-radius: 50%;
-            overflow: hidden;
-            background: #e5e5e5;
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow-lg);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+            transition: all .4s cubic-bezier(.4, 0, .2, 1)
+        }
+
+        .slider .sun {
+            font-size: 14px;
+            opacity: 1;
+            transition: opacity .3s ease
+        }
+
+        .slider .moon {
+            font-size: 14px;
+            opacity: .3;
+            transition: opacity .3s ease
+        }
+
+        .theme-switch input:checked~.slider {
+            background: var(--primary-orange);
+            border-color: var(--primary-orange)
+        }
+
+        .theme-switch input:checked~.slider .sun {
+            opacity: .3
+        }
+
+        .theme-switch input:checked~.slider .moon {
+            opacity: 1
+        }
+
+        .theme-switch input:checked~.slider::before {
+            transform: translateX(28px)
+        }
+
+        /* 头像按钮（保留原格式） */
+        .profile-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-left: 16px;
-            transition: var(--transition-smooth);
+            cursor: pointer;
+            transition: all .3s cubic-bezier(.4, 0, .2, 1);
+            color: var(--mid-grey);
+            text-decoration: none;
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            padding: 0;
         }
 
-        .avatar-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-            display: block;
-            transition: transform .25s ease
+        .profile-btn:hover {
+            transform: scale(1.1);
+            border-color: var(--primary-orange);
+            color: var(--primary-orange);
+            box-shadow: var(--shadow-md)
         }
 
-        .avatar-img[src=""],
-        .avatar-img:not([src]) {
-            display: none
-        }
-
-        /* 空头像隐藏图片，保留灰色圆底 */
-        .avatar-container:hover {
-            box-shadow: var(--shadow-xl);
-            transform: translateY(-3px)
-        }
-
-        .avatar-container:hover .avatar-img {
-            transform: scale(1.05)
-        }
-
-        /* Cards */
+        /* 主内容（卡片） */
         .card-wrapper {
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            transform: translateY(5vh)
+            transform: translateY(5vh);
+            padding-top: 128px
         }
 
         .card-grid {
@@ -190,7 +279,8 @@
             grid-template-columns: repeat(4, 1fr);
             gap: 12px;
             padding: 24px;
-            animation: fadeInUp .6s var(--ease) .15s both;
+            animation: fadeInUp .6s cubic-bezier(.4, 0, .2, 1) .15s both;
+            width: min(1400px, 96vw)
         }
 
         .vcard {
@@ -203,7 +293,7 @@
             display: flex;
             flex-direction: column;
             min-height: 500px;
-            animation: fadeInUp .6s var(--ease) both;
+            animation: fadeInUp .6s cubic-bezier(.4, 0, .2, 1) both
         }
 
         .card-grid .vcard:nth-child(1) {
@@ -266,7 +356,7 @@
             line-clamp: 5;
             max-height: 8em;
             text-align: left;
-            transition: max-height .3s ease;
+            transition: max-height .3s ease
         }
 
         .vcard-desc.expanded {
@@ -283,7 +373,7 @@
             font-size: 14px;
             cursor: pointer;
             margin-bottom: 10px;
-            transition: color .2s;
+            transition: color .2s
         }
 
         .expand-btn:hover {
@@ -296,7 +386,7 @@
             gap: 12px;
             border-top: 1px solid var(--border-color);
             padding-top: 10px;
-            margin-top: auto;
+            margin-top: auto
         }
 
         .meta-badge {
@@ -312,7 +402,7 @@
             border: 1px solid var(--border-color);
             transition: var(--transition-smooth);
             text-decoration: none;
-            animation: badgeIn .6s var(--ease) both;
+            animation: badgeIn .6s cubic-bezier(.4, 0, .2, 1) both
         }
 
         .meta-badge:hover {
@@ -320,10 +410,9 @@
             color: var(--pure-white);
             border-color: var(--primary-orange);
             transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
+            box-shadow: var(--shadow-md)
         }
 
-        /* Responsive */
         @media (max-width:1200px) {
             .card-grid {
                 grid-template-columns: repeat(3, 1fr)
@@ -342,7 +431,6 @@
             }
         }
 
-        /* Animations */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -367,20 +455,68 @@
             }
         }
 
-        /* === Coachmark 提示气泡（指向头像） === */
+        /* 暗色可读性修复 */
+        [data-theme="dark"] body {
+            color: var(--pure-white)
+        }
+
+        [data-theme="dark"] .vcard,
+        [data-theme="dark"] .vcard .vcard-body,
+        [data-theme="dark"] .vcard .vcard-desc,
+        [data-theme="dark"] .vcard .vcard-title {
+            background: var(--card-bg);
+            color: var(--pure-white);
+            border-color: var(--light-grey)
+        }
+
+        [data-theme="dark"] .meta-badge {
+            background: rgba(255, 255, 255, .08);
+            color: var(--pure-white);
+            border-color: var(--light-grey)
+        }
+
+        @media (max-width:768px) {
+            .nav-container {
+                padding: 1rem 1.75rem
+            }
+
+            .logo-img {
+                height: 70px
+            }
+
+            .nav-menu {
+                gap: 2rem
+            }
+
+            .card-wrapper {
+                padding-top: 120px
+            }
+        }
+
+        @media (max-width:480px) {
+            .nav-container {
+                padding: 1rem
+            }
+
+            .card-wrapper {
+                padding-top: 110px
+            }
+        }
+
+        /* Coachmark */
         .coachmark {
             position: fixed;
             z-index: 10000;
             max-width: 280px;
             background: #fff;
             color: #222;
-            border: 1px solid var(--border-color, #e5e5e5);
+            border: 1px solid var(--border-color);
             border-radius: 12px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, .12);
             padding: 12px 14px;
             font-size: 14px;
             line-height: 1.5;
-            animation: cmFade .18s ease-out;
+            animation: cmFade .18s ease-out
         }
 
         .coachmark .cm-title {
@@ -391,7 +527,8 @@
         .coachmark .cm-actions {
             display: flex;
             gap: 8px;
-            margin-top: 8px
+            margin-top: 8px;
+            justify-content: flex-end
         }
 
         .coachmark .cm-btn {
@@ -404,7 +541,7 @@
         }
 
         .coachmark .cm-btn.primary {
-            background: var(--primary-orange, #F26B38);
+            background: var(--primary-orange);
             color: #fff
         }
 
@@ -434,65 +571,75 @@
             border-left: 10px solid transparent;
             border-right: 10px solid transparent;
             border-bottom: 10px solid #fff;
-            filter: drop-shadow(0 -1px 0 rgba(0, 0, 0, .06));
+            filter: drop-shadow(0 -1px 0 rgba(0, 0, 0, .06))
+        }
+
+        [data-theme="dark"] .coachmark {
+            background: var(--card-bg);
+            color: var(--pure-white);
+            border-color: var(--light-grey)
+        }
+
+        [data-theme="dark"] .coachmark::before {
+            border-bottom-color: var(--card-bg)
         }
     </style>
 </head>
 
 <body>
-    <!-- Navigation Bar -->
+    <!-- 导航 -->
     <nav class="navbar" id="navbar">
-        <div class="logo-container">
-            <img src="Assets/1.png" alt="University Logo" class="logo-image">
+        <div class="nav-container">
+            <a href="#" class="logo-link">
+                <img src="Assets/Logo.png" alt="University Logo" class="logo-img">
+            </a>
+
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#" class="nav-link active">Home</a></li>
+                <li><a href="#" class="nav-link gate-link" data-label="Lecture">Lecture</a></li>
+                <li><a href="#" class="nav-link gate-link" data-label="Tutorial">Tutorial</a></li>
+                <li><a href="https://canvas.sydney.edu.au/" class="nav-link" target="_blank">Canvas</a></li>
+                <li><a href="#" class="nav-link gate-link" data-label="TeamUp">TeamUp</a></li>
+            </ul>
+
+            <div class="nav-right">
+                <label class="theme-switch">
+                    <input type="checkbox" id="themeToggle">
+                    <span class="slider"><span class="sun">☀️</span><span class="moon">🌙</span></span>
+                </label>
+                <!-- 关键：添加 id="profileAnchor" 让提示能定位到头像按钮 -->
+                <a href="Avatar1.html" class="profile-btn" id="profileAnchor" aria-label="Profile"></a>
+            </div>
         </div>
-        <ul class="nav-menu" id="navMenu">
-            <li class="nav-item"><a href="#" class="nav-link">Home</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">Lecture</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">Tutorial</a></li>
-            <li class="nav-item"><a href="https://www.sydney.edu.au/students/canvas/accessing-canvas.html" class="nav-link">Canvas</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">TeamUp</a></li>
-        </ul>
-        <!-- 没有头像：img 空 src，保持灰色圆形；点击仍跳 Avatar1.html -->
-        <a href="Avatar1.html" class="avatar-container">
-            <img src="#" alt="" class="avatar-img">
-        </a>
     </nav>
 
-    <!-- Main Content -->
+    <!-- 主内容 -->
     <div class="card-wrapper">
         <section class="section-card">
             <div class="card-grid">
-
                 <!-- 卡片 1 -->
                 <article class="vcard">
                     <div class="vcard-img"><img src="Assets/9105.png" alt="9105"></div>
                     <div class="vcard-body">
                         <h3 class="vcard-title">IDEA9105 Interface Design</h3>
-                        <p class="vcard-desc">
-                            This unit introduces students to the fundamentals of user interface design. Interface design
-                            is an important element of
-                            a human-centred design approach to the development of interactive computational systems.
-                            Students will learn about
-                            industry standard user interface design and usability principles and guidelines, based in
-                            visual design theory and
-                            visual perception. They will acquire practical knowledge through the application of tools
-                            and techniques for designing
-                            and evaluating user interfaces for a variety of different platforms. This includes (1)
-                            low-fidelity prototyping (hand
-                            sketches, wireframes, clickable prototypes); (2) usability testing and heuristics; (3) web
-                            and mobile user interfaces
-                            and/or emerging technologies. The aim is to develop appreciation of visual design principles
-                            and their impact on the
-                            user experience of interactive products. The knowledge and skills developed in this unit
-                            will equip students with the
-                            essential capabilities for working in the interaction design and user experience profession.
-                            This unit is a foundational
-                            core unit in the Master of Interaction Design and Electronic Arts program.
+                        <p class="vcard-desc">This unit introduces students to the fundamentals of user interface
+                            design. Interface design is an important element of a human-centred design approach to the
+                            development of interactive computational systems. Students will learn about industry
+                            standard user interface design and usability principles and guidelines, based in visual
+                            design theory and visual perception. They will acquire practical knowledge through the
+                            application of tools and techniques for designing and evaluating user interfaces for a
+                            variety of different platforms. This includes (1) low-fidelity prototyping (hand sketches,
+                            wireframes, clickable prototypes); (2) usability testing and heuristics; (3) web and mobile
+                            user interfaces and/or emerging technologies. The aim is to develop appreciation of visual
+                            design principles and their impact on the user experience of interactive products. The
+                            knowledge and skills developed in this unit will equip students with the essential
+                            capabilities for working in the interaction design and user experience profession. This unit
+                            is a foundational core unit in the Master of Interaction Design and Electronic Arts program.
                         </p>
                         <button class="expand-btn">··· More</button>
                         <div class="vcard-links">
-                            <a class="meta-badge" href="Lecture.html">Lecture</a>
-                            <a class="meta-badge" href="Tut.html">Tutorial</a>
+                            <a class="meta-badge gate-link" href="Lecture.html" data-label="Lecture">Lecture</a>
+                            <a class="meta-badge gate-link" href="Tut.html" data-label="Tutorial">Tutorial</a>
                         </div>
                     </div>
                 </article>
@@ -502,27 +649,20 @@
                     <div class="vcard-img"><img src="Assets/9106.png" alt="9106"></div>
                     <div class="vcard-body">
                         <h3 class="vcard-title">IDEA9106 Design Thinking</h3>
-                        <p class="vcard-desc">
-                            This unit of study provides an overview of a human-centred approach to the design of
-                            products and systems.
-                            It introduces students to design thinking and how it can be productively applied to
-                            different design situations. The
-                            theoretical concepts, methods and tools for the key stages of interaction design are covered
-                            including user research,
+                        <p class="vcard-desc">This unit of study provides an overview of a human-centred approach to the
+                            design of products and systems. It introduces students to design thinking and how it can be
+                            productively applied to different design situations. The theoretical concepts, methods and
+                            tools for the key stages of interaction design are covered including user research,
                             ideation, prototyping and user evaluation. It provides students with the principles,
-                            processes and tools for working
-                            collaboratively on design projects in studio. Students learn to build empathy with users,
-                            identify and reframe the
-                            problem space, develop value-driven design concepts and persuasively communicate design
-                            proposals with an emphasis on
-                            the user experience through visual storytelling. This unit is a foundational core unit in
-                            the Master of Interaction
-                            Design and Electronic Arts program.
-                        </p>
+                            processes and tools for working collaboratively on design projects in studio. Students learn
+                            to build empathy with users, identify and reframe the problem space, develop value-driven
+                            design concepts and persuasively communicate design proposals with an emphasis on the user
+                            experience through visual storytelling. This unit is a foundational core unit in the Master
+                            of Interaction Design and Electronic Arts program.</p>
                         <button class="expand-btn">··· More</button>
                         <div class="vcard-links">
-                            <a class="meta-badge" href="#">Lecture</a>
-                            <a class="meta-badge" href="#">Tutorial</a>
+                            <a class="meta-badge gate-link" href="Lecture.html" data-label="Lecture">Lecture</a>
+                            <a class="meta-badge gate-link" href="Tut.html" data-label="Tutorial">Tutorial</a>
                         </div>
                     </div>
                 </article>
@@ -532,29 +672,22 @@
                     <div class="vcard-img"><img src="Assets/9103.png" alt="9103"></div>
                     <div class="vcard-body">
                         <h3 class="vcard-title">IDEA9103 Creative Coding</h3>
-                        <p class="vcard-desc">
-                            This unit provides an introduction to the development of software in design and the creative
-                            industries.
-                            It teaches an understanding of the fundamentals of computational thinking, as well as skills
-                            in the design and
-                            implementation of software for creative expression. It introduces students to tools for
-                            building interactive design
+                        <p class="vcard-desc">This unit provides an introduction to the development of software in
+                            design and the creative industries. It teaches an understanding of the fundamentals of
+                            computational thinking, as well as skills in the design and implementation of software for
+                            creative expression. It introduces students to tools for building interactive design
                             prototypes that express their interaction design skills through programming. It covers
-                            knowledge of programming concepts,
-                            creative coding practices, and their practical implementation through Javascript, HTML, and
-                            CSS. Key concepts
-                            covered in this unit include: variables, functions, control flows, and algorithmic thinking.
-                            Students learn how to
+                            knowledge of programming concepts, creative coding practices, and their practical
+                            implementation through Javascript, HTML, and CSS. Key concepts covered in this unit include:
+                            variables, functions, control flows, and algorithmic thinking. Students learn how to
                             approach creative expression through the medium of code, which will allow them to
-                            incorporate programming into their own
-                            design practice as well as to collaborate effectively with software developers. This unit is
-                            a foundational core unit in
-                            the Master of Interaction Design and Electronic Arts program.
-                        </p>
+                            incorporate programming into their own design practice as well as to collaborate effectively
+                            with software developers. This unit is a foundational core unit in the Master of Interaction
+                            Design and Electronic Arts program.</p>
                         <button class="expand-btn">··· More</button>
                         <div class="vcard-links">
-                            <a class="meta-badge" href="#">Lecture</a>
-                            <a class="meta-badge" href="#">Tutorial</a>
+                            <a class="meta-badge gate-link" href="Lecture.html" data-label="Lecture">Lecture</a>
+                            <a class="meta-badge gate-link" href="Tut.html" data-label="Tutorial">Tutorial</a>
                         </div>
                     </div>
                 </article>
@@ -564,27 +697,20 @@
                     <div class="vcard-img"><img src="Assets/9004.png" alt="9004"></div>
                     <div class="vcard-body">
                         <h3 class="vcard-title">DESN9004 Design Practices</h3>
-                        <p class="vcard-desc">
-                            In this subject, you will gain an understanding of design-led innovation concepts, practices
-                            and
-                            approaches. You will explore design-based innovation issues and use critical thinking to
-                            explore various notions of design
-                            value. This subject explores different modes of inquiry and encourages students to develop a
-                            diverse range of research
+                        <p class="vcard-desc">In this subject, you will gain an understanding of design-led innovation
+                            concepts, practices and approaches. You will explore design-based innovation issues and use
+                            critical thinking to explore various notions of design value. This subject explores
+                            different modes of inquiry and encourages students to develop a diverse range of research
                             practices. Knowledge and understanding of design thinking gained from other units will be
-                            applied via critical thinking to
-                            practical design topics. Students learn how to engage with design innovation (or is that
-                            innovative design?) practices,
-                            as well as engaging with practical design and innovation challenges. Students will leave
-                            this course with a
+                            applied via critical thinking to practical design topics. Students learn how to engage with
+                            design innovation (or is that innovative design?) practices, as well as engaging with
+                            practical design and innovation challenges. Students will leave this course with a
                             comprehensive understanding of design innovation principles, as well as practices drawing on
-                            critical design thinking
-                            and design methods and approaches.
-                        </p>
+                            critical design thinking and design methods and approaches.</p>
                         <button class="expand-btn">··· More</button>
                         <div class="vcard-links">
-                            <a class="meta-badge" href="#">Lecture</a>
-                            <a class="meta-badge" href="#">Tutorial</a>
+                            <a class="meta-badge gate-link" href="Lecture.html" data-label="Lecture">Lecture</a>
+                            <a class="meta-badge gate-link" href="Tut.html" data-label="Tutorial">Tutorial</a>
                         </div>
                     </div>
                 </article>
@@ -594,7 +720,7 @@
     </div>
 
     <script>
-        // Show more / less
+        /* 展开/收起（5行默认） */
         document.querySelectorAll('.expand-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const desc = btn.previousElementSibling;
@@ -604,91 +730,83 @@
             });
         });
 
-        // Navbar shrink on scroll
+        /* 导航滚动阴影 */
         const navbar = document.getElementById('navbar');
-        const onScroll = () => {
-            if (window.scrollY > 12) navbar.classList.add('scrolled');
-            else navbar.classList.remove('scrolled');
-        };
-        document.addEventListener('scroll', onScroll, { passive: true });
-        onScroll();
+        const onScroll = () => { if (window.scrollY > 12) navbar.classList.add('scrolled'); else navbar.classList.remove('scrolled'); };
+        document.addEventListener('scroll', onScroll, { passive: true }); onScroll();
 
-        // 不读取 localStorage，页面默认“无头像”
-        const avatarAnchor = document.querySelector('.avatar-container');
+        /* 主题持久化 */
+        const themeToggleSwitch = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', currentTheme);
+        themeToggleSwitch.checked = currentTheme === 'dark';
+        themeToggleSwitch.addEventListener('change', () => {
+            const newTheme = themeToggleSwitch.checked ? 'dark' : 'light';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
 
-        // 拦截所有 Lecture / Tutorial，提示先完成 Profile
-        (function gateStudyLinks() {
-            const links = document.querySelectorAll('.meta-badge');
-            links.forEach(a => {
-                a.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    showCoachmark();
-                });
+        /* 点击 Lecture/Tutorial/TeamUp 弹出创建 Profile 提示 */
+        const profileAnchor = document.getElementById('profileAnchor'); // 现在能取到
+        document.querySelectorAll('.gate-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const href = link.getAttribute('href') || '#';
+                const label = link.getAttribute('data-label') || 'this page';
+                showCoachmark(label, () => { window.location.href = href; });
             });
-        })();
+        });
 
-        // Coachmark：指向头像的提示气泡
         let cmEl = null;
-        function showCoachmark() {
-            if (!avatarAnchor) return;
+        function showCoachmark(labelText, onContinue) {
+            if (!profileAnchor) return; // 安全兜底
             if (cmEl) { positionCoachmark(cmEl); return; }
 
             cmEl = document.createElement('div');
             cmEl.className = 'coachmark';
             cmEl.innerHTML = `
-        <div class="cm-title">Complete your profile</div>
-        <div>Set your avatar first to access Lecture & Tutorial pages.</div>
+        <div class="cm-title">Create your profile</div>
+        <div>Please set up your profile (add an avatar) before opening <b>${labelText}</b>.</div>
         <div class="cm-actions">
-          <button class="cm-btn primary" id="cmGo">Go to profile</button>
-          <button class="cm-btn ghost" id="cmClose">Later</button>
-        </div>
-      `;
+          <button class="cm-btn ghost" id="cmLater">Later</button>
+          <button class="cm-btn primary" id="cmCreate">Create profile</button>
+        </div>`;
             document.body.appendChild(cmEl);
             positionCoachmark(cmEl);
 
-            cmEl.querySelector('#cmGo')?.addEventListener('click', () => {
-                window.location.href = 'Avatar1.html';
-            });
-            cmEl.querySelector('#cmClose')?.addEventListener('click', hideCoachmark);
+            cmEl.querySelector('#cmCreate')?.addEventListener('click', () => { window.location.href = 'Avatar1.html'; });
+            cmEl.querySelector('#cmLater')?.addEventListener('click', hideCoachmark);
 
-            window.addEventListener('click', onDocClick, true);
             window.addEventListener('resize', onViewportChange);
             window.addEventListener('scroll', onViewportChange, { passive: true });
-        }
-
-        function hideCoachmark() {
-            if (!cmEl) return;
-            window.removeEventListener('click', onDocClick, true);
-            window.removeEventListener('resize', onViewportChange);
-            window.removeEventListener('scroll', onViewportChange);
-            cmEl.remove();
-            cmEl = null;
-        }
-
-        function onDocClick(e) {
-            if (!cmEl) return;
-            const clickInside = cmEl.contains(e.target) || avatarAnchor.contains(e.target);
-            if (!clickInside) hideCoachmark();
-        }
-
-        function onViewportChange() {
-            if (cmEl) positionCoachmark(cmEl);
+            setTimeout(() => document.addEventListener('click', onDocClick, true), 0);
         }
 
         function positionCoachmark(el) {
-            const rect = avatarAnchor.getBoundingClientRect();
-            const cmW = el.offsetWidth || 280;
-            const gap = 10; // 头像与气泡间距
-
+            const rect = profileAnchor.getBoundingClientRect();
+            const gap = 10;
             const top = rect.bottom + gap + window.scrollY;
+            const cmW = el.offsetWidth || 280;
             let left = rect.left + rect.width / 2 - cmW / 2 + window.scrollX;
-
             const minPad = 8;
             left = Math.max(minPad + window.scrollX,
                 Math.min(left, window.scrollX + document.documentElement.clientWidth - cmW - minPad));
-
             el.style.top = `${top}px`;
             el.style.left = `${left}px`;
+        }
+        function onViewportChange() { if (cmEl) positionCoachmark(cmEl); }
+        function onDocClick(e) {
+            if (!cmEl) return;
+            const within = cmEl.contains(e.target) || profileAnchor.contains(e.target);
+            if (!within) hideCoachmark();
+        }
+        function hideCoachmark() {
+            if (!cmEl) return;
+            document.removeEventListener('click', onDocClick, true);
+            window.removeEventListener('resize', onViewportChange);
+            window.removeEventListener('scroll', onViewportChange);
+            cmEl.remove(); cmEl = null;
         }
     </script>
 </body>
